@@ -8,11 +8,11 @@
 
 <h3>Why Do I Need It?</h3>
 
-SimpleCam was created out of the necessity to have high quality photographs while providing a lightweight memory footprint.  Apple's UIImagePicker is a wonderful application, but because it has a lot of features and a lot of options, . . . it uses a lot of MEMORY.  This can cause crashes, lag, and an overall poor user experience when all you wanted was to give the user an opportunity to take a quick picture.
+SimpleCam was created out of the necessity to have high quality photographs while providing a lightweight memory footprint.  Apple's UIImagePicker is a wonderful application, but because it has a lot of features and a lot of options, . . . it uses a lot of MEMORY.  This can cause crashes, lag, and an overall poor experience when all you wanted was to give the user an opportunity to take a quick picture.
 
 If you're capturing photographs with UIImagePicker, or via AVFoundation on the highest possible capture resolution, it will return giant image files exceeding thousands of pixels in size.  SimpleCam avoids this while still using the highest possible capture resolution by resizing the photo to 2x the size of the phone's screen.  This allows the photo to maintain a significantly reduced file size while still looking clean and brilliant on mobile displays.
 
-I hope you find the project as useful as I did, and I'll continue to add more features including more customization options. 
+I hope you find the project as useful as I did!
 
 <h3>Features</h3>
 <ul>
