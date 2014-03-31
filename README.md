@@ -36,7 +36,7 @@ I hope you find the project as useful as I did, and I'll continue to add more fe
 Icon's generously provided by PixelLove:
 </p>
 <p>
-<a href="http://pixellove.com"> 
+<a href="http://pixellove.com" target="_blank"> 
   <img src="https://github.com/LoganWright/SimpleCam/blob/master/SimpleCam/Images/Attribution_PixelLove.png?raw=true" width=200></img>
 </a> 
 </p>
