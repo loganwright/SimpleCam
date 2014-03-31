@@ -2,6 +2,10 @@
 
 <h4 align="center">A Memory Efficient Drop In Camera Replacement / Alternative for UIImagePicker</h4>
 
+<p align="center">
+  <img src="https://github.com/LoganWright/SimpleCam/blob/master/SimpleCamCover.png?raw=true" width=320></img> 
+</p>
+
 <h3>Why Do I Need It?</h3>
 
 SimpleCam was created out of the necessity to have high quality photographs while providing a lightweight memory footprint.  Apple's UIImagePicker is a wonderful application, but because it has a lot of features and a lot of options, . . . it uses a lot of MEMORY.  This can cause crashes, lag, and an overall poor user experience when all you wanted was to give the user an opportunity to take a quick picture.
