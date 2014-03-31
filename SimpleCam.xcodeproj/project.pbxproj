@@ -19,6 +19,22 @@
 		8058D50118E9C72F0031A3B1 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8058D4E918E9C72F0031A3B1 /* UIKit.framework */; };
 		8058D50918E9C72F0031A3B1 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 8058D50718E9C72F0031A3B1 /* InfoPlist.strings */; };
 		8058D50B18E9C72F0031A3B1 /* SimpleCamTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 8058D50A18E9C72F0031A3B1 /* SimpleCamTests.m */; };
+		8058D51D18E9C7C70031A3B1 /* CameraRotate.png in Resources */ = {isa = PBXBuildFile; fileRef = 8058D51618E9C7C70031A3B1 /* CameraRotate.png */; };
+		8058D51E18E9C7C70031A3B1 /* Download.png in Resources */ = {isa = PBXBuildFile; fileRef = 8058D51718E9C7C70031A3B1 /* Download.png */; };
+		8058D51F18E9C7C70031A3B1 /* Lightening.png in Resources */ = {isa = PBXBuildFile; fileRef = 8058D51818E9C7C70031A3B1 /* Lightening.png */; };
+		8058D52018E9C7C70031A3B1 /* Previous.png in Resources */ = {isa = PBXBuildFile; fileRef = 8058D51918E9C7C70031A3B1 /* Previous.png */; };
+		8058D52118E9C7C70031A3B1 /* LICENSE.txt in Resources */ = {isa = PBXBuildFile; fileRef = 8058D51A18E9C7C70031A3B1 /* LICENSE.txt */; };
+		8058D52218E9C7C70031A3B1 /* SimpleCam.m in Sources */ = {isa = PBXBuildFile; fileRef = 8058D51C18E9C7C70031A3B1 /* SimpleCam.m */; };
+		8058D52D18E9C7D00031A3B1 /* landscape_Camera.png in Resources */ = {isa = PBXBuildFile; fileRef = 8058D52418E9C7D00031A3B1 /* landscape_Camera.png */; };
+		8058D52E18E9C7D00031A3B1 /* landscape_Preview.png in Resources */ = {isa = PBXBuildFile; fileRef = 8058D52518E9C7D00031A3B1 /* landscape_Preview.png */; };
+		8058D52F18E9C7D00031A3B1 /* landscape_RotatedPreview.png in Resources */ = {isa = PBXBuildFile; fileRef = 8058D52618E9C7D00031A3B1 /* landscape_RotatedPreview.png */; };
+		8058D53018E9C7D00031A3B1 /* LaunchSimpleCam.gif in Resources */ = {isa = PBXBuildFile; fileRef = 8058D52718E9C7D00031A3B1 /* LaunchSimpleCam.gif */; };
+		8058D53118E9C7D00031A3B1 /* portrait_Camera.png in Resources */ = {isa = PBXBuildFile; fileRef = 8058D52818E9C7D00031A3B1 /* portrait_Camera.png */; };
+		8058D53218E9C7D00031A3B1 /* portrait_Preview.png in Resources */ = {isa = PBXBuildFile; fileRef = 8058D52918E9C7D00031A3B1 /* portrait_Preview.png */; };
+		8058D53318E9C7D00031A3B1 /* portrait_RotatedPreview.png in Resources */ = {isa = PBXBuildFile; fileRef = 8058D52A18E9C7D00031A3B1 /* portrait_RotatedPreview.png */; };
+		8058D53418E9C7D00031A3B1 /* SimpleCamHeader.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 8058D52B18E9C7D00031A3B1 /* SimpleCamHeader.jpg */; };
+		8058D53518E9C7D00031A3B1 /* ViewControllerHeaderExample.png in Resources */ = {isa = PBXBuildFile; fileRef = 8058D52C18E9C7D00031A3B1 /* ViewControllerHeaderExample.png */; };
+		8058D53818E9C7DD0031A3B1 /* RootViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8058D53718E9C7DD0031A3B1 /* RootViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -48,6 +64,24 @@
 		8058D50618E9C72F0031A3B1 /* SimpleCamTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "SimpleCamTests-Info.plist"; sourceTree = "<group>"; };
 		8058D50818E9C72F0031A3B1 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		8058D50A18E9C72F0031A3B1 /* SimpleCamTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SimpleCamTests.m; sourceTree = "<group>"; };
+		8058D51618E9C7C70031A3B1 /* CameraRotate.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = CameraRotate.png; sourceTree = "<group>"; };
+		8058D51718E9C7C70031A3B1 /* Download.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Download.png; sourceTree = "<group>"; };
+		8058D51818E9C7C70031A3B1 /* Lightening.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Lightening.png; sourceTree = "<group>"; };
+		8058D51918E9C7C70031A3B1 /* Previous.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Previous.png; sourceTree = "<group>"; };
+		8058D51A18E9C7C70031A3B1 /* LICENSE.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENSE.txt; sourceTree = "<group>"; };
+		8058D51B18E9C7C70031A3B1 /* SimpleCam.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SimpleCam.h; sourceTree = "<group>"; };
+		8058D51C18E9C7C70031A3B1 /* SimpleCam.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SimpleCam.m; sourceTree = "<group>"; };
+		8058D52418E9C7D00031A3B1 /* landscape_Camera.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = landscape_Camera.png; sourceTree = "<group>"; };
+		8058D52518E9C7D00031A3B1 /* landscape_Preview.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = landscape_Preview.png; sourceTree = "<group>"; };
+		8058D52618E9C7D00031A3B1 /* landscape_RotatedPreview.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = landscape_RotatedPreview.png; sourceTree = "<group>"; };
+		8058D52718E9C7D00031A3B1 /* LaunchSimpleCam.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = LaunchSimpleCam.gif; sourceTree = "<group>"; };
+		8058D52818E9C7D00031A3B1 /* portrait_Camera.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = portrait_Camera.png; sourceTree = "<group>"; };
+		8058D52918E9C7D00031A3B1 /* portrait_Preview.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = portrait_Preview.png; sourceTree = "<group>"; };
+		8058D52A18E9C7D00031A3B1 /* portrait_RotatedPreview.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = portrait_RotatedPreview.png; sourceTree = "<group>"; };
+		8058D52B18E9C7D00031A3B1 /* SimpleCamHeader.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = SimpleCamHeader.jpg; sourceTree = "<group>"; };
+		8058D52C18E9C7D00031A3B1 /* ViewControllerHeaderExample.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ViewControllerHeaderExample.png; sourceTree = "<group>"; };
+		8058D53618E9C7DD0031A3B1 /* RootViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RootViewController.h; sourceTree = "<group>"; };
+		8058D53718E9C7DD0031A3B1 /* RootViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RootViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -107,8 +141,12 @@
 		8058D4EB18E9C72F0031A3B1 /* SimpleCam */ = {
 			isa = PBXGroup;
 			children = (
+				8058D52318E9C7D00031A3B1 /* Images */,
+				8058D51418E9C7C70031A3B1 /* SimpleCam */,
 				8058D4F418E9C72F0031A3B1 /* AppDelegate.h */,
 				8058D4F518E9C72F0031A3B1 /* AppDelegate.m */,
+				8058D53618E9C7DD0031A3B1 /* RootViewController.h */,
+				8058D53718E9C7DD0031A3B1 /* RootViewController.m */,
 				8058D4F718E9C72F0031A3B1 /* Images.xcassets */,
 				8058D4EC18E9C72F0031A3B1 /* Supporting Files */,
 			);
@@ -142,6 +180,44 @@
 				8058D50718E9C72F0031A3B1 /* InfoPlist.strings */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		8058D51418E9C7C70031A3B1 /* SimpleCam */ = {
+			isa = PBXGroup;
+			children = (
+				8058D51518E9C7C70031A3B1 /* Icons */,
+				8058D51A18E9C7C70031A3B1 /* LICENSE.txt */,
+				8058D51B18E9C7C70031A3B1 /* SimpleCam.h */,
+				8058D51C18E9C7C70031A3B1 /* SimpleCam.m */,
+			);
+			path = SimpleCam;
+			sourceTree = "<group>";
+		};
+		8058D51518E9C7C70031A3B1 /* Icons */ = {
+			isa = PBXGroup;
+			children = (
+				8058D51618E9C7C70031A3B1 /* CameraRotate.png */,
+				8058D51718E9C7C70031A3B1 /* Download.png */,
+				8058D51818E9C7C70031A3B1 /* Lightening.png */,
+				8058D51918E9C7C70031A3B1 /* Previous.png */,
+			);
+			path = Icons;
+			sourceTree = "<group>";
+		};
+		8058D52318E9C7D00031A3B1 /* Images */ = {
+			isa = PBXGroup;
+			children = (
+				8058D52418E9C7D00031A3B1 /* landscape_Camera.png */,
+				8058D52518E9C7D00031A3B1 /* landscape_Preview.png */,
+				8058D52618E9C7D00031A3B1 /* landscape_RotatedPreview.png */,
+				8058D52718E9C7D00031A3B1 /* LaunchSimpleCam.gif */,
+				8058D52818E9C7D00031A3B1 /* portrait_Camera.png */,
+				8058D52918E9C7D00031A3B1 /* portrait_Preview.png */,
+				8058D52A18E9C7D00031A3B1 /* portrait_RotatedPreview.png */,
+				8058D52B18E9C7D00031A3B1 /* SimpleCamHeader.jpg */,
+				8058D52C18E9C7D00031A3B1 /* ViewControllerHeaderExample.png */,
+			);
+			path = Images;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -219,8 +295,22 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8058D51D18E9C7C70031A3B1 /* CameraRotate.png in Resources */,
 				8058D4F018E9C72F0031A3B1 /* InfoPlist.strings in Resources */,
+				8058D52D18E9C7D00031A3B1 /* landscape_Camera.png in Resources */,
+				8058D52E18E9C7D00031A3B1 /* landscape_Preview.png in Resources */,
+				8058D52F18E9C7D00031A3B1 /* landscape_RotatedPreview.png in Resources */,
+				8058D51F18E9C7C70031A3B1 /* Lightening.png in Resources */,
+				8058D53518E9C7D00031A3B1 /* ViewControllerHeaderExample.png in Resources */,
+				8058D53418E9C7D00031A3B1 /* SimpleCamHeader.jpg in Resources */,
 				8058D4F818E9C72F0031A3B1 /* Images.xcassets in Resources */,
+				8058D53118E9C7D00031A3B1 /* portrait_Camera.png in Resources */,
+				8058D52018E9C7C70031A3B1 /* Previous.png in Resources */,
+				8058D51E18E9C7C70031A3B1 /* Download.png in Resources */,
+				8058D52118E9C7C70031A3B1 /* LICENSE.txt in Resources */,
+				8058D53318E9C7D00031A3B1 /* portrait_RotatedPreview.png in Resources */,
+				8058D53218E9C7D00031A3B1 /* portrait_Preview.png in Resources */,
+				8058D53018E9C7D00031A3B1 /* LaunchSimpleCam.gif in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -240,6 +330,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				8058D4F618E9C72F0031A3B1 /* AppDelegate.m in Sources */,
+				8058D52218E9C7C70031A3B1 /* SimpleCam.m in Sources */,
+				8058D53818E9C7DD0031A3B1 /* RootViewController.m in Sources */,
 				8058D4F218E9C72F0031A3B1 /* main.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
