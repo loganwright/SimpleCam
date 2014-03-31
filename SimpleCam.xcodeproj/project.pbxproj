@@ -1,0 +1,452 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		8058D4E618E9C72F0031A3B1 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8058D4E518E9C72F0031A3B1 /* Foundation.framework */; };
+		8058D4E818E9C72F0031A3B1 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8058D4E718E9C72F0031A3B1 /* CoreGraphics.framework */; };
+		8058D4EA18E9C72F0031A3B1 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8058D4E918E9C72F0031A3B1 /* UIKit.framework */; };
+		8058D4F018E9C72F0031A3B1 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 8058D4EE18E9C72F0031A3B1 /* InfoPlist.strings */; };
+		8058D4F218E9C72F0031A3B1 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 8058D4F118E9C72F0031A3B1 /* main.m */; };
+		8058D4F618E9C72F0031A3B1 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 8058D4F518E9C72F0031A3B1 /* AppDelegate.m */; };
+		8058D4F818E9C72F0031A3B1 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8058D4F718E9C72F0031A3B1 /* Images.xcassets */; };
+		8058D4FF18E9C72F0031A3B1 /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8058D4FE18E9C72F0031A3B1 /* XCTest.framework */; };
+		8058D50018E9C72F0031A3B1 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8058D4E518E9C72F0031A3B1 /* Foundation.framework */; };
+		8058D50118E9C72F0031A3B1 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8058D4E918E9C72F0031A3B1 /* UIKit.framework */; };
+		8058D50918E9C72F0031A3B1 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 8058D50718E9C72F0031A3B1 /* InfoPlist.strings */; };
+		8058D50B18E9C72F0031A3B1 /* SimpleCamTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 8058D50A18E9C72F0031A3B1 /* SimpleCamTests.m */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		8058D50218E9C72F0031A3B1 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 8058D4DA18E9C72F0031A3B1 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 8058D4E118E9C72F0031A3B1;
+			remoteInfo = SimpleCam;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		8058D4E218E9C72F0031A3B1 /* SimpleCam.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SimpleCam.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		8058D4E518E9C72F0031A3B1 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		8058D4E718E9C72F0031A3B1 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
+		8058D4E918E9C72F0031A3B1 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
+		8058D4ED18E9C72F0031A3B1 /* SimpleCam-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "SimpleCam-Info.plist"; sourceTree = "<group>"; };
+		8058D4EF18E9C72F0031A3B1 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		8058D4F118E9C72F0031A3B1 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		8058D4F318E9C72F0031A3B1 /* SimpleCam-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "SimpleCam-Prefix.pch"; sourceTree = "<group>"; };
+		8058D4F418E9C72F0031A3B1 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
+		8058D4F518E9C72F0031A3B1 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
+		8058D4F718E9C72F0031A3B1 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
+		8058D4FD18E9C72F0031A3B1 /* SimpleCamTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SimpleCamTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		8058D4FE18E9C72F0031A3B1 /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
+		8058D50618E9C72F0031A3B1 /* SimpleCamTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "SimpleCamTests-Info.plist"; sourceTree = "<group>"; };
+		8058D50818E9C72F0031A3B1 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		8058D50A18E9C72F0031A3B1 /* SimpleCamTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SimpleCamTests.m; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		8058D4DF18E9C72F0031A3B1 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				8058D4E818E9C72F0031A3B1 /* CoreGraphics.framework in Frameworks */,
+				8058D4EA18E9C72F0031A3B1 /* UIKit.framework in Frameworks */,
+				8058D4E618E9C72F0031A3B1 /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		8058D4FA18E9C72F0031A3B1 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				8058D4FF18E9C72F0031A3B1 /* XCTest.framework in Frameworks */,
+				8058D50118E9C72F0031A3B1 /* UIKit.framework in Frameworks */,
+				8058D50018E9C72F0031A3B1 /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		8058D4D918E9C72F0031A3B1 = {
+			isa = PBXGroup;
+			children = (
+				8058D4EB18E9C72F0031A3B1 /* SimpleCam */,
+				8058D50418E9C72F0031A3B1 /* SimpleCamTests */,
+				8058D4E418E9C72F0031A3B1 /* Frameworks */,
+				8058D4E318E9C72F0031A3B1 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		8058D4E318E9C72F0031A3B1 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				8058D4E218E9C72F0031A3B1 /* SimpleCam.app */,
+				8058D4FD18E9C72F0031A3B1 /* SimpleCamTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		8058D4E418E9C72F0031A3B1 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				8058D4E518E9C72F0031A3B1 /* Foundation.framework */,
+				8058D4E718E9C72F0031A3B1 /* CoreGraphics.framework */,
+				8058D4E918E9C72F0031A3B1 /* UIKit.framework */,
+				8058D4FE18E9C72F0031A3B1 /* XCTest.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		8058D4EB18E9C72F0031A3B1 /* SimpleCam */ = {
+			isa = PBXGroup;
+			children = (
+				8058D4F418E9C72F0031A3B1 /* AppDelegate.h */,
+				8058D4F518E9C72F0031A3B1 /* AppDelegate.m */,
+				8058D4F718E9C72F0031A3B1 /* Images.xcassets */,
+				8058D4EC18E9C72F0031A3B1 /* Supporting Files */,
+			);
+			path = SimpleCam;
+			sourceTree = "<group>";
+		};
+		8058D4EC18E9C72F0031A3B1 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				8058D4ED18E9C72F0031A3B1 /* SimpleCam-Info.plist */,
+				8058D4EE18E9C72F0031A3B1 /* InfoPlist.strings */,
+				8058D4F118E9C72F0031A3B1 /* main.m */,
+				8058D4F318E9C72F0031A3B1 /* SimpleCam-Prefix.pch */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		8058D50418E9C72F0031A3B1 /* SimpleCamTests */ = {
+			isa = PBXGroup;
+			children = (
+				8058D50A18E9C72F0031A3B1 /* SimpleCamTests.m */,
+				8058D50518E9C72F0031A3B1 /* Supporting Files */,
+			);
+			path = SimpleCamTests;
+			sourceTree = "<group>";
+		};
+		8058D50518E9C72F0031A3B1 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				8058D50618E9C72F0031A3B1 /* SimpleCamTests-Info.plist */,
+				8058D50718E9C72F0031A3B1 /* InfoPlist.strings */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		8058D4E118E9C72F0031A3B1 /* SimpleCam */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 8058D50E18E9C72F0031A3B1 /* Build configuration list for PBXNativeTarget "SimpleCam" */;
+			buildPhases = (
+				8058D4DE18E9C72F0031A3B1 /* Sources */,
+				8058D4DF18E9C72F0031A3B1 /* Frameworks */,
+				8058D4E018E9C72F0031A3B1 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = SimpleCam;
+			productName = SimpleCam;
+			productReference = 8058D4E218E9C72F0031A3B1 /* SimpleCam.app */;
+			productType = "com.apple.product-type.application";
+		};
+		8058D4FC18E9C72F0031A3B1 /* SimpleCamTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 8058D51118E9C72F0031A3B1 /* Build configuration list for PBXNativeTarget "SimpleCamTests" */;
+			buildPhases = (
+				8058D4F918E9C72F0031A3B1 /* Sources */,
+				8058D4FA18E9C72F0031A3B1 /* Frameworks */,
+				8058D4FB18E9C72F0031A3B1 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				8058D50318E9C72F0031A3B1 /* PBXTargetDependency */,
+			);
+			name = SimpleCamTests;
+			productName = SimpleCamTests;
+			productReference = 8058D4FD18E9C72F0031A3B1 /* SimpleCamTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		8058D4DA18E9C72F0031A3B1 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0510;
+				ORGANIZATIONNAME = "Logan Wright";
+				TargetAttributes = {
+					8058D4FC18E9C72F0031A3B1 = {
+						TestTargetID = 8058D4E118E9C72F0031A3B1;
+					};
+				};
+			};
+			buildConfigurationList = 8058D4DD18E9C72F0031A3B1 /* Build configuration list for PBXProject "SimpleCam" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = 8058D4D918E9C72F0031A3B1;
+			productRefGroup = 8058D4E318E9C72F0031A3B1 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				8058D4E118E9C72F0031A3B1 /* SimpleCam */,
+				8058D4FC18E9C72F0031A3B1 /* SimpleCamTests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		8058D4E018E9C72F0031A3B1 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				8058D4F018E9C72F0031A3B1 /* InfoPlist.strings in Resources */,
+				8058D4F818E9C72F0031A3B1 /* Images.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		8058D4FB18E9C72F0031A3B1 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				8058D50918E9C72F0031A3B1 /* InfoPlist.strings in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		8058D4DE18E9C72F0031A3B1 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				8058D4F618E9C72F0031A3B1 /* AppDelegate.m in Sources */,
+				8058D4F218E9C72F0031A3B1 /* main.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		8058D4F918E9C72F0031A3B1 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				8058D50B18E9C72F0031A3B1 /* SimpleCamTests.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		8058D50318E9C72F0031A3B1 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 8058D4E118E9C72F0031A3B1 /* SimpleCam */;
+			targetProxy = 8058D50218E9C72F0031A3B1 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		8058D4EE18E9C72F0031A3B1 /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				8058D4EF18E9C72F0031A3B1 /* en */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+		8058D50718E9C72F0031A3B1 /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				8058D50818E9C72F0031A3B1 /* en */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		8058D50C18E9C72F0031A3B1 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+			};
+			name = Debug;
+		};
+		8058D50D18E9C72F0031A3B1 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = YES;
+				ENABLE_NS_ASSERTIONS = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
+				SDKROOT = iphoneos;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		8058D50F18E9C72F0031A3B1 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "SimpleCam/SimpleCam-Prefix.pch";
+				INFOPLIST_FILE = "SimpleCam/SimpleCam-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = app;
+			};
+			name = Debug;
+		};
+		8058D51018E9C72F0031A3B1 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "SimpleCam/SimpleCam-Prefix.pch";
+				INFOPLIST_FILE = "SimpleCam/SimpleCam-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = app;
+			};
+			name = Release;
+		};
+		8058D51218E9C72F0031A3B1 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/SimpleCam.app/SimpleCam";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SDKROOT)/Developer/Library/Frameworks",
+					"$(inherited)",
+					"$(DEVELOPER_FRAMEWORKS_DIR)",
+				);
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "SimpleCam/SimpleCam-Prefix.pch";
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				INFOPLIST_FILE = "SimpleCamTests/SimpleCamTests-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUNDLE_LOADER)";
+				WRAPPER_EXTENSION = xctest;
+			};
+			name = Debug;
+		};
+		8058D51318E9C72F0031A3B1 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/SimpleCam.app/SimpleCam";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SDKROOT)/Developer/Library/Frameworks",
+					"$(inherited)",
+					"$(DEVELOPER_FRAMEWORKS_DIR)",
+				);
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "SimpleCam/SimpleCam-Prefix.pch";
+				INFOPLIST_FILE = "SimpleCamTests/SimpleCamTests-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUNDLE_LOADER)";
+				WRAPPER_EXTENSION = xctest;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		8058D4DD18E9C72F0031A3B1 /* Build configuration list for PBXProject "SimpleCam" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				8058D50C18E9C72F0031A3B1 /* Debug */,
+				8058D50D18E9C72F0031A3B1 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		8058D50E18E9C72F0031A3B1 /* Build configuration list for PBXNativeTarget "SimpleCam" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				8058D50F18E9C72F0031A3B1 /* Debug */,
+				8058D51018E9C72F0031A3B1 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+		8058D51118E9C72F0031A3B1 /* Build configuration list for PBXNativeTarget "SimpleCamTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				8058D51218E9C72F0031A3B1 /* Debug */,
+				8058D51318E9C72F0031A3B1 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 8058D4DA18E9C72F0031A3B1 /* Project object */;
+}
