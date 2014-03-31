@@ -91,17 +91,17 @@ That's it, it's as  simple as that.  SimpleCam will take care of everything else
 ###Portrait
 <h5 align="center">Camera (About To Capture)</h5>
 <p align="center">
-  <img src="https://github.com/LoganWright/SimpleCam/blob/master/SimpleCam/portrait_Camera.png?raw=true" width=320></img> 
+  <img src="https://github.com/LoganWright/SimpleCam/blob/master/SimpleCam/Images/portrait_Camera.png?raw=true" width=320></img> 
 </p>
 
 <h5 align="center">Preview (Shows Captured Image)</h5>
 <p align="center">
-  <img src="https://github.com/LoganWright/SimpleCam/blob/master/SimpleCam/portrait_Preview.png?raw=true" width=320></img> 
+  <img src="https://github.com/LoganWright/SimpleCam/blob/master/SimpleCam/Images/portrait_Preview.png?raw=true" width=320></img> 
 </p>
 
 <h5 align="center">Preview - Rotated (Maintains Captured Image Ratio)</h5>
 <p align="center">
-  <img src="https://github.com/LoganWright/SimpleCam/blob/master/SimpleCam/portrait_RotatedPreview.png?raw=true" width=568></img> 
+  <img src="https://github.com/LoganWright/SimpleCam/blob/master/SimpleCam/Images/portrait_RotatedPreview.png?raw=true" width=568></img> 
 </p>
 
 
@@ -109,15 +109,15 @@ That's it, it's as  simple as that.  SimpleCam will take care of everything else
 
 <h5 align="center">Camera (About To Capture)</h5>
 <p align="center">
-  <img src="https://github.com/LoganWright/SimpleCam/blob/master/SimpleCam/landscape_Camera.png?raw=true" width=568></img> 
+  <img src="https://github.com/LoganWright/SimpleCam/blob/master/SimpleCam/Images/landscape_Camera.png?raw=true" width=568></img> 
 </p>
 
 <h5 align="center">Preview (Shows Captured Image)</h5>
 <p align="center">
-  <img src="https://github.com/LoganWright/SimpleCam/blob/master/SimpleCam/landscape_Preview.png?raw=true" width=568></img> 
+  <img src="https://github.com/LoganWright/SimpleCam/blob/master/SimpleCam/Images/landscape_Preview.png?raw=true" width=568></img> 
 </p>
 
 <h5 align="center">Preview - Rotated (Maintains Captured Image Ratio)</h5>
 <p align="center">
-  <img src="https://github.com/LoganWright/SimpleCam/blob/master/SimpleCam/landscape_RotatedPreview.png?raw=true" width=320></img> 
+  <img src="https://github.com/LoganWright/SimpleCam/blob/master/SimpleCam/Images/landscape_RotatedPreview.png?raw=true" width=320></img> 
 </p>
