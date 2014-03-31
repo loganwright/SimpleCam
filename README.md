@@ -3,7 +3,7 @@
 <h4 align="center">A Memory Efficient Drop In Camera Replacement / Alternative for the Native UIImagePicker Camera</h4>
 
 <p align="center">
-  <img src="https://github.com/LoganWright/SimpleCam/blob/master/SimpleCamCover.png?raw=true" width=320></img> 
+  <img src="https://github.com/LoganWright/SimpleCam/blob/master/SimpleCam/Images/SimpleCamCover.png?raw=true" width=320></img> 
 </p>
 
 <h3>Why Do I Need It?</h3>
@@ -27,6 +27,10 @@ I hope you find the project as useful as I did, and I'll continue to add more fe
   <li>Auto Crop / Scale</li>
   <li>Selfies Don't Flip</li>
 </ul>
+
+<p align="center">
+  <img src="https://github.com/LoganWright/SimpleCam/blob/master/SimpleCam/Images/placeit.png?raw=true" width=850></img> 
+</p>
 
 #Adding SimpleCam to Your Project
 
