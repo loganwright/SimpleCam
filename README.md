@@ -1,6 +1,6 @@
 <h1 align="center">SimpleCam</h1>
 
-<h4 align="center">A Memory Efficient Drop In Camera Replacement / Alternative for the Native UIImagePicker Camera</h4>
+<h4 align="center">A Memory Efficient Drop In Replacement / Alternative for the Native UIImagePicker Camera</h4>
 
 <p align="center">
   <img src="https://github.com/LoganWright/SimpleCam/blob/master/SimpleCam/Images/SimpleCamCover.png?raw=true" width=320></img> 
