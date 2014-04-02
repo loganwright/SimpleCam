@@ -1,0 +1,193 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>Simplecam by LoganWright</title>
+
+    <link rel="stylesheet" href="stylesheets/styles.css">
+    <link rel="stylesheet" href="stylesheets/pygment_trac.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+    <div class="wrapper">
+      <header>
+        <h1>Simplecam</h1>
+        <p>A Memory Efficient Drop In Replacement / Alternative for the Native UIImagePicker Camera</p>
+
+        <p class="view"><a href="https://github.com/LoganWright/SimpleCam">View the Project on GitHub <small>LoganWright/SimpleCam</small></a></p>
+
+
+        <ul>
+          <li><a href="https://github.com/LoganWright/SimpleCam/zipball/master">Download <strong>ZIP File</strong></a></li>
+          <li><a href="https://github.com/LoganWright/SimpleCam/tarball/master">Download <strong>TAR Ball</strong></a></li>
+          <li><a href="https://github.com/LoganWright/SimpleCam">View On <strong>GitHub</strong></a></li>
+        </ul>
+      </header>
+      <section>
+        <h1 align="center">
+<a name="simplecam" class="anchor" href="#simplecam"><span class="octicon octicon-link"></span></a>SimpleCam</h1>
+
+<h4 align="center">
+<a name="a-memory-efficient-drop-in-replacement--alternative-for-the-native-uiimagepicker-camera" class="anchor" href="#a-memory-efficient-drop-in-replacement--alternative-for-the-native-uiimagepicker-camera"><span class="octicon octicon-link"></span></a>A Memory Efficient Drop In Replacement / Alternative for the Native UIImagePicker Camera</h4>
+
+<p align="center">
+  <img src="https://github.com/LoganWright/SimpleCam/blob/master/SimpleCam/Images/SimpleCamCover.png?raw=true" width="320"></p>
+
+<h3>
+<a name="why-do-i-need-it" class="anchor" href="#why-do-i-need-it"><span class="octicon octicon-link"></span></a>Why Do I Need It?</h3>
+
+<p>SimpleCam was created out of the necessity to have high quality photographs while providing a lightweight memory footprint.  Apple's UIImagePicker is a wonderful application, but because it has a lot of features and a lot of options, . . . it uses a lot of MEMORY.  This can cause crashes, lag, and an overall poor experience when all you wanted was to give the user an opportunity to take a quick picture.</p>
+
+<p>If you're capturing photographs with UIImagePicker, or via AVFoundation on the highest possible capture resolution, it will return giant image files exceeding thousands of pixels in size.  SimpleCam avoids this while still using the highest possible capture resolution by resizing the photo to 2x the size of the phone's screen.  This allows the photo to maintain a significantly reduced file size while still looking clean and brilliant on mobile displays.</p>
+
+<p>I hope you find the project as useful as I did!</p>
+
+<h3>
+<a name="features" class="anchor" href="#features"><span class="octicon octicon-link"></span></a>Features</h3>
+
+<ul>
+<li>iOS 7 Inspired Design</li>
+  <li>3.5” &amp; 4” Screen Compatibility</li>
+  <li>Low Memory Usage</li>
+  <li>Drag &amp; Drop Installation</li> 
+  <li>Portrait/Landscape Views</li> 
+  <li>Front/Rear Camera</li> 
+  <li>Touch to Focus</li> 
+  <li>Controllable Flash</li>
+  <li>Auto Crop / Scale</li>
+  <li>Selfies Don't Flip</li>
+</ul><p align="center">
+  <img src="https://github.com/LoganWright/SimpleCam/blob/master/SimpleCam/Images/placeit.png?raw=true" width="860"></p>
+
+<p>
+Icon's generously provided by PixelLove:
+</p>
+
+<p>
+<a href="http://pixellove.com" target="_blank"> 
+  <img src="https://github.com/LoganWright/SimpleCam/blob/master/SimpleCam/Images/Attribution_PixelLove.png?raw=true" width="200"></a> 
+</p>
+
+<h1>
+<a name="adding-simplecam-to-your-project" class="anchor" href="#adding-simplecam-to-your-project"><span class="octicon octicon-link"></span></a>Adding SimpleCam to Your Project</h1>
+
+<h3>
+<a name="1-add-simplecam-folder-to-xcode" class="anchor" href="#1-add-simplecam-folder-to-xcode"><span class="octicon octicon-link"></span></a>1. Add SimpleCam Folder to Xcode</h3>
+
+<ul>
+<li>Unzip SimpleCam</li>
+<li>Drag SimpleCam Folder into your Xcode project</li>
+<li>Make sure "Copy items into destination group's folder (if needed)" is selected</li>
+</ul><h3>
+<a name="2-your-viewcontrollerh-file" class="anchor" href="#2-your-viewcontrollerh-file"><span class="octicon octicon-link"></span></a>2. Your ViewController.h File</h3>
+
+<ul>
+<li>Import SimpleCam</li>
+<li>Set up your view controller as a simpleCam delegate</li>
+</ul><div class="highlight highlight-Obj-C"><pre><span class="cp">#import &lt;UIKit/UIKit.h&gt;</span>
+<span class="cp">#import "SimpleCam.h"</span>
+
+<span class="k">@interface</span> <span class="nc">ViewController</span> : <span class="nc">UIViewController</span> <span class="o">&lt;</span><span class="n">SimpleCamDelegate</span><span class="o">&gt;</span>
+
+<span class="k">@end</span>
+</pre></div>
+
+<h3>
+<a name="3-set-up-delegate" class="anchor" href="#3-set-up-delegate"><span class="octicon octicon-link"></span></a>3. Set Up Delegate</h3>
+
+<ul>
+<li>Add SimpleCam's Delegate method to your ViewController.m file</li>
+</ul><div class="highlight highlight-Obj-C"><pre><span class="cp">#pragma mark SIMPLE CAM DELEGATE</span>
+
+<span class="k">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span> <span class="nf">closeSimpleCamWithImage:</span><span class="p">(</span><span class="n">UIImage</span> <span class="o">*</span><span class="p">)</span><span class="nv">image</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">image</span><span class="p">)</span> <span class="p">{</span>
+        <span class="c1">// closed with image</span>
+    <span class="p">}</span>
+    <span class="k">else</span> <span class="p">{</span>
+        <span class="c1">// user backed out w/o image</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+
+<p>This is how SimpleCam will notify your ViewController that the user is finished with it.  If there is an image, then the user took a picture.  If there is not, then the user backed out of the camera without taking a photograph.</p>
+
+<h3>
+<a name="4-launch-simplecam" class="anchor" href="#4-launch-simplecam"><span class="octicon octicon-link"></span></a>4. Launch SimpleCam</h3>
+
+<ul>
+<li>Add this code wherever you'd like SimpleCam to launch</li>
+</ul><div class="highlight highlight-Obj-C"><pre><span class="n">SimpleCam</span> <span class="o">*</span> <span class="n">simpleCam</span> <span class="o">=</span> <span class="p">[[</span><span class="n">SimpleCam</span> <span class="n">alloc</span><span class="p">]</span><span class="n">init</span><span class="p">];</span>
+<span class="n">simpleCam</span><span class="p">.</span><span class="n">delegate</span> <span class="o">=</span> <span class="n">self</span><span class="p">;</span>    
+<span class="p">[</span><span class="n">self</span> <span class="n">presentViewController</span><span class="o">:</span><span class="n">simpleCam</span> <span class="n">animated</span><span class="o">:</span><span class="nb">YES</span> <span class="n">completion</span><span class="o">:</span><span class="nb">nil</span><span class="p">];</span>
+</pre></div>
+
+<p>If you'd like to launch simple cam when the user presses a button, you could add the above code to the IBAction method, like so:</p>
+
+<div class="highlight highlight-Obj-C"><pre><span class="k">-</span><span class="p">(</span><span class="kt">IBAction</span><span class="p">)</span><span class="nf">buttonPress:</span><span class="p">(</span><span class="kt">id</span><span class="p">)</span><span class="nv">sender</span>
+<span class="p">{</span>        
+  <span class="n">SimpleCam</span> <span class="o">*</span> <span class="n">simpleCam</span> <span class="o">=</span> <span class="p">[[</span><span class="n">SimpleCam</span> <span class="n">alloc</span><span class="p">]</span><span class="n">init</span><span class="p">];</span>
+  <span class="n">simpleCam</span><span class="p">.</span><span class="n">delegate</span> <span class="o">=</span> <span class="n">self</span><span class="p">;</span>    
+  <span class="p">[</span><span class="n">self</span> <span class="n">presentViewController</span><span class="o">:</span><span class="n">simpleCam</span> <span class="n">animated</span><span class="o">:</span><span class="nb">YES</span> <span class="n">completion</span><span class="o">:</span><span class="nb">nil</span><span class="p">];</span>
+<span class="p">}</span>
+</pre></div>
+
+<p>That's it, it's as  simple as that.  SimpleCam will take care of everything else.</p>
+
+<h1>
+<a name="screen-shots" class="anchor" href="#screen-shots"><span class="octicon octicon-link"></span></a>Screen Shots</h1>
+
+<h3>
+<a name="portrait" class="anchor" href="#portrait"><span class="octicon octicon-link"></span></a>Portrait</h3>
+
+<h5 align="center">
+<a name="camera-about-to-capture" class="anchor" href="#camera-about-to-capture"><span class="octicon octicon-link"></span></a>Camera (About To Capture)</h5>
+
+<p align="center">
+  <img src="https://github.com/LoganWright/SimpleCam/blob/master/SimpleCam/Images/portrait_Camera.png?raw=true" width="320"></p>
+
+<h5 align="center">
+<a name="preview-shows-captured-image" class="anchor" href="#preview-shows-captured-image"><span class="octicon octicon-link"></span></a>Preview (Shows Captured Image)</h5>
+
+<p align="center">
+  <img src="https://github.com/LoganWright/SimpleCam/blob/master/SimpleCam/Images/portrait_Preview.png?raw=true" width="320"></p>
+
+<h5 align="center">
+<a name="preview---rotated-maintains-captured-image-ratio" class="anchor" href="#preview---rotated-maintains-captured-image-ratio"><span class="octicon octicon-link"></span></a>Preview - Rotated (Maintains Captured Image Ratio)</h5>
+
+<p align="center">
+  <img src="https://github.com/LoganWright/SimpleCam/blob/master/SimpleCam/Images/portrait_RotatedPreview.png?raw=true" width="568"></p>
+
+<h3>
+<a name="landscape" class="anchor" href="#landscape"><span class="octicon octicon-link"></span></a>Landscape</h3>
+
+<h5 align="center">
+<a name="camera-about-to-capture-1" class="anchor" href="#camera-about-to-capture-1"><span class="octicon octicon-link"></span></a>Camera (About To Capture)</h5>
+
+<p align="center">
+  <img src="https://github.com/LoganWright/SimpleCam/blob/master/SimpleCam/Images/landscape_Camera.png?raw=true" width="568"></p>
+
+<h5 align="center">
+<a name="preview-shows-captured-image-1" class="anchor" href="#preview-shows-captured-image-1"><span class="octicon octicon-link"></span></a>Preview (Shows Captured Image)</h5>
+
+<p align="center">
+  <img src="https://github.com/LoganWright/SimpleCam/blob/master/SimpleCam/Images/landscape_Preview.png?raw=true" width="568"></p>
+
+<h5 align="center">
+<a name="preview---rotated-maintains-captured-image-ratio-1" class="anchor" href="#preview---rotated-maintains-captured-image-ratio-1"><span class="octicon octicon-link"></span></a>Preview - Rotated (Maintains Captured Image Ratio)</h5>
+
+<p align="center">
+  <img src="https://github.com/LoganWright/SimpleCam/blob/master/SimpleCam/Images/landscape_RotatedPreview.png?raw=true" width="320"></p>
+      </section>
+      <footer>
+        <p>This project is maintained by <a href="https://github.com/LoganWright">LoganWright</a></p>
+        <p><small>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></small></p>
+      </footer>
+    </div>
+    <script src="javascripts/scale.fix.js"></script>
+    
+  </body>
+</html>
