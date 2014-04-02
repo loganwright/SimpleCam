@@ -46,6 +46,8 @@
     _imgView = [UIImageView new];
     _imgView.bounds = CGRectMake(0, 0, 200, 300);
     _imgView.center = self.view.center;
+    _imgView.autoresizingMask = UIViewAutoresizingFlexibleBottomMargin | UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleLeftMargin;
+    _imgView.contentMode = UIViewContentModeScaleAspectFit;
     [self.view addSubview:_imgView];
 }
 

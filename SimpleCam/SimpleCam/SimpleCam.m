@@ -73,7 +73,7 @@
     BOOL isCapturingImage;
     
     // Used to cover animation flicker
-    CALayer * coverLayer;
+    CALayer * previewCoverLayer;
     
     // Square Border
     UIView * squareV;
@@ -183,11 +183,9 @@
     
     if (self.interfaceOrientation == UIInterfaceOrientationLandscapeLeft) {
         _captureVideoPreviewLayer.connection.videoOrientation = AVCaptureVideoOrientationLandscapeLeft;
-        //NSLog(@"SC: rotating left");
     }
     else if (self.interfaceOrientation == UIInterfaceOrientationLandscapeRight) {
         _captureVideoPreviewLayer.connection.videoOrientation = AVCaptureVideoOrientationLandscapeRight;
-        //NSLog(@"SC: rotating right");
     }
     
     [self prepareControls];
@@ -206,6 +204,14 @@
         [self.view addSubview:squareV];
     }
     
+    /* To Block Rotation Animation Flicker */
+    UIView * streamCover = [UIView new];
+    streamCover.backgroundColor = [UIColor blackColor];
+    streamCover.bounds = CGRectMake(0, 0, screenHeight * 3, screenHeight * 3); // 1 full screen size either direction
+    streamCover.center = self.view.center;
+    streamCover.autoresizingMask = UIViewAutoresizingNone;
+    self.view.clipsToBounds = NO;
+    [self.view insertSubview:streamCover belowSubview:_imageStreamV];
 }
 
 - (void) viewDidAppear:(BOOL)animated {
@@ -213,7 +219,6 @@
         _imageStreamV.alpha = 1;
     } completion:^(BOOL finished) {
         if (finished) {
-            //NSLog(@"SC: Image Streaming");
         }
     }];
 }
@@ -265,6 +270,7 @@
     captureBtn.titleLabel.numberOfLines = 0;
     captureBtn.titleLabel.minimumScaleFactor = .5;
     
+    // Stylize buttons
     for (UIButton * v in @[backBtn, captureBtn, flashBtn, switchCameraBtn, saveBtn])  {
         
         v.backgroundColor = [UIColor colorWithWhite:1 alpha:.96];
@@ -463,8 +469,8 @@
         isImageResized = NO;
         isSaveWaitingForResizedImage = NO;
         
-        [coverLayer removeFromSuperlayer];
-        coverLayer = nil;
+        [previewCoverLayer removeFromSuperlayer];
+        previewCoverLayer = nil;
         
         [self drawControls];
     }
@@ -637,13 +643,13 @@
         
         // adding cover layer bc otherwise you see a glint of the camera when rotating and it looks weird.
         // you could stop the stream, but it takes a sec to get it started again.
-        if (coverLayer == nil) {
-            coverLayer = [[CALayer alloc]init];
-            coverLayer.backgroundColor = [UIColor blackColor].CGColor;
-            coverLayer.bounds = CGRectMake(0, 0, screenHeight * 3, screenHeight * 3); // 1 full screen size either direction
-            coverLayer.anchorPoint = CGPointMake(0.5, 0.5);
+        if (previewCoverLayer == nil) {
+            previewCoverLayer = [[CALayer alloc]init];
+            previewCoverLayer.backgroundColor = [UIColor blackColor].CGColor;
+            previewCoverLayer.bounds = CGRectMake(0, 0, screenHeight * 3, screenHeight * 3); // 1 full screen size either direction
+            previewCoverLayer.anchorPoint = CGPointMake(0.5, 0.5);
             _imageStreamV.layer.masksToBounds = NO;
-            [_imageStreamV.layer addSublayer:coverLayer];
+            [_imageStreamV.layer addSublayer:previewCoverLayer];
         }
         
         if (!isImageResized) {
@@ -697,8 +703,8 @@
         previousImg = nil;
         cameraRotateImg = nil;
         
-        [coverLayer removeFromSuperlayer];
-        coverLayer = nil;
+        [previewCoverLayer removeFromSuperlayer];
+        previewCoverLayer = nil;
         
         isRotateWaitingForResizedImage = NO;
         isImageResized = NO;
