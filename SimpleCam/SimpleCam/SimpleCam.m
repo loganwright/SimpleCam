@@ -40,23 +40,14 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+static CGFloat optionAvailableAlpha = 0.6;
+static CGFloat optionUnavailableAlpha = 0.2;
+
 #import "SimpleCam.h"
 
 @interface SimpleCam ()
 
 {
-    // Images
-    UIImage * lighteningImg;
-    UIImage * cameraRotateImg;
-    UIImage * downloadImg;
-    UIImage * previousImg;
-    
-    // Controls
-    UIButton * backBtn;
-    UIButton * captureBtn;
-    UIButton * flashBtn;
-    UIButton * switchCameraBtn;
-    UIButton * saveBtn;
     
     // Measurements
     CGFloat screenWidth;
@@ -71,13 +62,20 @@
     
     // Capture Toggle
     BOOL isCapturingImage;
-    
-    // Used to cover animation flicker
-    CALayer * previewCoverLayer;
-    
-    // Square Border
-    UIView * squareV;
 }
+
+// Used to cover animation flicker during rotation
+@property (strong, nonatomic) UIView * rotationCover;
+
+// Square Border
+@property (strong, nonatomic) UIView * squareV;
+
+// Controls
+@property (strong, nonatomic) UIButton * backBtn;
+@property (strong, nonatomic) UIButton * captureBtn;
+@property (strong, nonatomic) UIButton * flashBtn;
+@property (strong, nonatomic) UIButton * switchCameraBtn;
+@property (strong, nonatomic) UIButton * saveBtn;
 
 // AVFoundation Properties
 @property (strong, nonatomic) AVCaptureSession * mySesh;
@@ -96,7 +94,9 @@
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
+        
         // Custom initialization
+        
     }
     return self;
 }
@@ -106,30 +106,18 @@
     
     [super viewDidLoad];
     
+    self.view.clipsToBounds = NO;
     self.view.backgroundColor = [UIColor blackColor];
     
-    previousImg = [UIImage imageNamed:@"Previous.png"];
-    downloadImg = [UIImage imageNamed:@"Download.png"];
-    lighteningImg = [UIImage imageNamed:@"Lightening.png"];
-    cameraRotateImg = [UIImage imageNamed:@"CameraRotate.png"]; 
-    
-    BOOL isLandscape = NO;
-    
-    if (UIInterfaceOrientationIsLandscape(self.interfaceOrientation)) {
-        isLandscape = YES;
-    }
-    
-	// Do any additional setup after loading the view.
     screenWidth = self.view.bounds.size.width;
     screenHeight = self.view.bounds.size.height;
     
-    if (isLandscape) self.view.frame = CGRectMake(0, 0, screenHeight, screenWidth);
+    if  (UIInterfaceOrientationIsLandscape(self.interfaceOrientation)) self.view.frame = CGRectMake(0, 0, screenHeight, screenWidth);
     
     if (_imageStreamV == nil) _imageStreamV = [[UIView alloc]init];
     _imageStreamV.alpha = 0;
     _imageStreamV.frame = self.view.bounds;
     [self.view addSubview:_imageStreamV];
-    
     
     if (_capturedImageV == nil) _capturedImageV = [[UIImageView alloc]init];
     _capturedImageV.frame = _imageStreamV.frame; // just to even it out
@@ -188,35 +176,44 @@
         _captureVideoPreviewLayer.connection.videoOrientation = AVCaptureVideoOrientationLandscapeRight;
     }
     
-    [self prepareControls];
-    
     if (_isSquareMode) {
         NSLog(@"SC: isSquareMode");
-        squareV = [[UIView alloc]init];
-        squareV.backgroundColor = [UIColor clearColor];
-        squareV.layer.borderWidth = 4;
-        squareV.layer.borderColor = [UIColor colorWithWhite:1 alpha:.8].CGColor;
-        squareV.bounds = CGRectMake(0, 0, screenWidth, screenWidth);
-        squareV.center = self.view.center;
+        _squareV = [[UIView alloc]init];
+        _squareV.backgroundColor = [UIColor clearColor];
+        _squareV.layer.borderWidth = 4;
+        _squareV.layer.borderColor = [UIColor colorWithWhite:1 alpha:.8].CGColor;
+        _squareV.bounds = CGRectMake(0, 0, screenWidth, screenWidth);
+        _squareV.center = self.view.center;
         
-        squareV.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin;
+        _squareV.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin;
         
-        [self.view addSubview:squareV];
+        [self.view addSubview:_squareV];
     }
     
-    /* To Block Rotation Animation Flicker */
-    UIView * streamCover = [UIView new];
-    streamCover.backgroundColor = [UIColor blackColor];
-    streamCover.bounds = CGRectMake(0, 0, screenHeight * 3, screenHeight * 3); // 1 full screen size either direction
-    streamCover.center = self.view.center;
-    streamCover.autoresizingMask = UIViewAutoresizingNone;
-    self.view.clipsToBounds = NO;
-    [self.view insertSubview:streamCover belowSubview:_imageStreamV];
+    // -- LOAD ROTATION COVERS BEGIN -- //
+    /*
+     Rotating causes a weird flicker, I'm in the process of looking for a better
+     solution, but for now, this works.
+     */
+    
+    // Stream Cover
+    _rotationCover = [UIView new];
+    _rotationCover.backgroundColor = [UIColor blackColor];
+    _rotationCover.bounds = CGRectMake(0, 0, screenHeight * 3, screenHeight * 3); // 1 full screen size either direction
+    _rotationCover.center = self.view.center;
+    _rotationCover.autoresizingMask = UIViewAutoresizingNone;
+    _rotationCover.alpha = 0;
+    [self.view insertSubview:_rotationCover belowSubview:_imageStreamV];
+    // -- LOAD ROTATION COVERS END -- //
+    
+    // -- PREPARE OUR CONTROLS -- //
+    [self loadControls];
 }
 
 - (void) viewDidAppear:(BOOL)animated {
     [UIView animateWithDuration:.25 delay:0 options:UIViewAnimationOptionCurveEaseOut animations:^{
         _imageStreamV.alpha = 1;
+        _rotationCover.alpha = 1;
     } completion:^(BOOL finished) {
         if (finished) {
         }
@@ -231,153 +228,149 @@
 
 #pragma mark CAMERA CONTROLS
 
-- (void) prepareControls {
+- (void) loadControls {
     
-    backBtn = [UIButton buttonWithType:UIButtonTypeSystem];
-    [backBtn addTarget:self action:@selector(backBtnPressed:) forControlEvents:UIControlEventTouchUpInside];
-    [backBtn setImage:previousImg forState:UIControlStateNormal];
-    [backBtn setTintColor:[self redColor]];
-    [backBtn setImageEdgeInsets:UIEdgeInsetsMake(9, 10, 9, 13)];
-    // btn is 40 x 40 , img is 22 x 40 (18 x 20)
+    // -- LOAD BUTTON IMAGES BEGIN -- //
+    UIImage * previousImg = [UIImage imageNamed:@"Previous.png"];
+    UIImage * downloadImg = [UIImage imageNamed:@"Download.png"];
+    UIImage * lighteningImg = [UIImage imageNamed:@"Lightening.png"];
+    UIImage * cameraRotateImg = [UIImage imageNamed:@"CameraRotate.png"];
+    // -- LOAD BUTTON IMAGES END -- //
     
-    flashBtn = [UIButton buttonWithType:UIButtonTypeSystem];
-    [flashBtn addTarget:self action:@selector(flashBtnPressed:) forControlEvents:UIControlEventTouchUpInside];
-    [flashBtn setImage:lighteningImg forState:UIControlStateNormal];
-    [flashBtn setTintColor:[self redColor]];
-    [flashBtn setImageEdgeInsets:UIEdgeInsetsMake(6, 9, 6, 9)];
-    // btn is 40 x 40 , img is 36 x 54 (18 x 26)
+    // -- LOAD BUTTONS BEGIN -- //
+    _backBtn = [UIButton buttonWithType:UIButtonTypeSystem];
+    [_backBtn addTarget:self action:@selector(backBtnPressed:) forControlEvents:UIControlEventTouchUpInside];
+    [_backBtn setImage:previousImg forState:UIControlStateNormal];
+    [_backBtn setTintColor:[self redColor]];
+    [_backBtn setImageEdgeInsets:UIEdgeInsetsMake(9, 10, 9, 13)];
     
+    _flashBtn = [UIButton buttonWithType:UIButtonTypeSystem];
+    [_flashBtn addTarget:self action:@selector(flashBtnPressed:) forControlEvents:UIControlEventTouchUpInside];
+    [_flashBtn setImage:lighteningImg forState:UIControlStateNormal];
+    [_flashBtn setTintColor:[self redColor]];
+    [_flashBtn setImageEdgeInsets:UIEdgeInsetsMake(6, 9, 6, 9)];
     
-    switchCameraBtn = [UIButton buttonWithType:UIButtonTypeSystem];
-    [switchCameraBtn setImage:cameraRotateImg forState:UIControlStateNormal];
-    [switchCameraBtn setTintColor:[self blueColor]];
-    [switchCameraBtn setImageEdgeInsets:UIEdgeInsetsMake(9.5, 7, 9.5, 7)];
+    _switchCameraBtn = [UIButton buttonWithType:UIButtonTypeSystem];
+    [_switchCameraBtn setImage:cameraRotateImg forState:UIControlStateNormal];
+    [_switchCameraBtn setTintColor:[self blueColor]];
+    [_switchCameraBtn setImageEdgeInsets:UIEdgeInsetsMake(9.5, 7, 9.5, 7)];
     
-    // btn is 40 x 40 , img is 54 x 42 (26 x 21)
+    _saveBtn = [UIButton buttonWithType:UIButtonTypeSystem];
+    [_saveBtn addTarget:self action:@selector(saveBtnPressed:) forControlEvents:UIControlEventTouchUpInside];
+    [_saveBtn setImage:downloadImg forState:UIControlStateNormal];
+    [_saveBtn setTintColor:[self blueColor]];
+    [_saveBtn setImageEdgeInsets:UIEdgeInsetsMake(7, 10.5, 7, 10.5)];
     
-    saveBtn = [UIButton buttonWithType:UIButtonTypeSystem];
-    [saveBtn addTarget:self action:@selector(saveBtnPressed:) forControlEvents:UIControlEventTouchUpInside];
-    [saveBtn setImage:downloadImg forState:UIControlStateNormal];
-    [saveBtn setTintColor:[self blueColor]];
-    [saveBtn setImageEdgeInsets:UIEdgeInsetsMake(7, 10.5, 7, 10.5)];
-    // btn is 40 x 40 , img is 38 x 54 (19 x 26)
-    
-    captureBtn = [UIButton buttonWithType:UIButtonTypeSystem];
-    [captureBtn addTarget:self action:@selector(captureBtnPressed:) forControlEvents:UIControlEventTouchUpInside];
-    [captureBtn setTitle:@"C\nA\nP\nT\nU\nR\nE" forState:UIControlStateNormal];
-    [captureBtn setTitleColor:[self darkGreyColor] forState:UIControlStateNormal];
-    captureBtn.titleLabel.font = [UIFont systemFontOfSize:12.5];
-    captureBtn.titleLabel.numberOfLines = 0;
-    captureBtn.titleLabel.minimumScaleFactor = .5;
+    _captureBtn = [UIButton buttonWithType:UIButtonTypeSystem];
+    [_captureBtn addTarget:self action:@selector(captureBtnPressed:) forControlEvents:UIControlEventTouchUpInside];
+    [_captureBtn setTitle:@"C\nA\nP\nT\nU\nR\nE" forState:UIControlStateNormal];
+    [_captureBtn setTitleColor:[self darkGreyColor] forState:UIControlStateNormal];
+    _captureBtn.titleLabel.font = [UIFont systemFontOfSize:12.5];
+    _captureBtn.titleLabel.numberOfLines = 0;
+    _captureBtn.titleLabel.minimumScaleFactor = .5;
+    // -- LOAD BUTTONS END -- //
     
     // Stylize buttons
-    for (UIButton * v in @[backBtn, captureBtn, flashBtn, switchCameraBtn, saveBtn])  {
+    for (UIButton * btn in @[_backBtn, _captureBtn, _flashBtn, _switchCameraBtn, _saveBtn])  {
         
-        v.backgroundColor = [UIColor colorWithWhite:1 alpha:.96];
-        v.layer.cornerRadius = 4;
-        v.layer.shadowColor= [UIColor colorWithWhite:0 alpha:.45].CGColor;
-        v.layer.shadowOpacity = 1;
-        v.layer.shadowRadius = 1;
-        v.layer.shadowPath = [UIBezierPath bezierPathWithRoundedRect:v.bounds cornerRadius:4].CGPath;//bezierPathWithRect:v.bounds].CGPath;
-        v.layer.shadowOffset = CGSizeMake(0, 0.5);
-        v.layer.rasterizationScale = [UIScreen mainScreen].scale;
-        v.layer.shouldRasterize = YES;
+        btn.bounds = CGRectMake(0, 0, 40, 40);
+        btn.backgroundColor = [UIColor colorWithWhite:1 alpha:.96];
+        btn.alpha = optionAvailableAlpha;
+        btn.hidden = YES;
         
-        v.alpha = .6;
+        btn.layer.shouldRasterize = YES;
+        btn.layer.rasterizationScale = [UIScreen mainScreen].scale;
+        btn.layer.cornerRadius = 4;
         
-        v.hidden = YES;
+        btn.layer.borderColor = [UIColor lightGrayColor].CGColor;
+        btn.layer.borderWidth = 0.5;
         
-        v.bounds = CGRectMake(0, 0, 40, 40);
-        
-        [self.view addSubview:v];
+        [self.view addSubview:btn];
     }
     
     // If a device doesn't have multiple cameras, fade out button ...
     if ([AVCaptureDevice devicesWithMediaType:AVMediaTypeVideo].count == 1) {
-        switchCameraBtn.alpha = 0.2;
+        _switchCameraBtn.alpha = optionUnavailableAlpha;
     }
     else {
-        [switchCameraBtn addTarget:self action:@selector(switchCameraBtnPressed:) forControlEvents:UIControlEventTouchUpInside];
+        [_switchCameraBtn addTarget:self action:@selector(switchCameraBtnPressed:) forControlEvents:UIControlEventTouchUpInside];
     }
     
+    // Draw camera controls
     [self drawControls];
 }
 
 - (void) drawControls {
     
+    static int offsetFromSide = 10;
+    static int offsetBetweenButtons = 20;
+    
+    static CGFloat portraitFontSize = 16.0;
+    static CGFloat landscapeFontSize = 12.5;
+    
     [UIView animateWithDuration:.25 delay:0 options:UIViewAnimationOptionCurveEaseOut  animations:^{
         
         if (UIInterfaceOrientationIsPortrait(self.interfaceOrientation)) {
             
-            CGFloat centerY = screenHeight - 8 - 20; // 8 is offset, 20 is half btn height
+            CGFloat centerY = screenHeight - 8 - 20; // 8 is offset from bottom (portrait), 20 is half btn height
             
-            // offset from side is '10'
-            backBtn.center = CGPointMake(10 + (backBtn.bounds.size.width / 2), centerY);
+            _backBtn.center = CGPointMake(offsetFromSide + (_backBtn.bounds.size.width / 2), centerY);
             
             // offset from backbtn is '20'
-            [captureBtn setTitle:@"CAPTURE" forState:UIControlStateNormal];
-            captureBtn.titleLabel.font = [UIFont systemFontOfSize:16.0];
-            captureBtn.bounds = CGRectMake(0, 0, 120, 40);
-            captureBtn.center = CGPointMake(backBtn.center.x + (backBtn.bounds.size.width / 2) + 20 + (captureBtn.bounds.size.width / 2), centerY);
+            [_captureBtn setTitle:@"CAPTURE" forState:UIControlStateNormal];
+            _captureBtn.titleLabel.font = [UIFont systemFontOfSize:portraitFontSize];
+            _captureBtn.bounds = CGRectMake(0, 0, 120, 40);
+            _captureBtn.center = CGPointMake(_backBtn.center.x + (_backBtn.bounds.size.width / 2) + offsetBetweenButtons + (_captureBtn.bounds.size.width / 2), centerY);
             
             // offset from capturebtn is '20'
-            flashBtn.center = CGPointMake(captureBtn.center.x + (captureBtn.bounds.size.width / 2) + 20 + (flashBtn.bounds.size.width / 2), centerY);
+            _flashBtn.center = CGPointMake(_captureBtn.center.x + (_captureBtn.bounds.size.width / 2) + offsetBetweenButtons + (_flashBtn.bounds.size.width / 2), centerY);
             
             // offset from flashBtn is '20'
-            switchCameraBtn.center = CGPointMake(flashBtn.center.x + (flashBtn.bounds.size.width / 2) + 20 + (switchCameraBtn.bounds.size.width / 2), centerY);
+            _switchCameraBtn.center = CGPointMake(_flashBtn.center.x + (_flashBtn.bounds.size.width / 2) + offsetBetweenButtons + (_switchCameraBtn.bounds.size.width / 2), centerY);
             
         }
-        else if (UIInterfaceOrientationIsLandscape(self.interfaceOrientation)) {
-            CGFloat centerX = screenHeight - 8 - 20; // 8 is offset, 20 is half btn height
+        else {
+            CGFloat centerX = screenHeight - 8 - 20; // 8 is offset from side(landscape), 20 is half btn height
             
             // offset from side is '10'
-            backBtn.center = CGPointMake(centerX, 10 + (backBtn.bounds.size.height / 2));
+            _backBtn.center = CGPointMake(centerX, offsetFromSide + (_backBtn.bounds.size.height / 2));
             
             // offset from backbtn is '20'
-            [captureBtn setTitle:@"C\nA\nP\nT\nU\nR\nE" forState:UIControlStateNormal];
-            captureBtn.titleLabel.font = [UIFont systemFontOfSize:12.5];
-            captureBtn.bounds = CGRectMake(0, 0, 40, 120);
-            captureBtn.center = CGPointMake(centerX, backBtn.center.y + (backBtn.bounds.size.height / 2) + 20 + (captureBtn.bounds.size.height / 2));
+            [_captureBtn setTitle:@"C\nA\nP\nT\nU\nR\nE" forState:UIControlStateNormal];
+            _captureBtn.titleLabel.font = [UIFont systemFontOfSize:landscapeFontSize];
+            _captureBtn.bounds = CGRectMake(0, 0, 40, 120);
+            _captureBtn.center = CGPointMake(centerX, _backBtn.center.y + (_backBtn.bounds.size.height / 2) + offsetBetweenButtons + (_captureBtn.bounds.size.height / 2));
             
             // offset from capturebtn is '20'
-            flashBtn.center = CGPointMake(centerX, captureBtn.center.y + (captureBtn.bounds.size.height / 2) + 20 + (flashBtn.bounds.size.height / 2));
+            _flashBtn.center = CGPointMake(centerX, _captureBtn.center.y + (_captureBtn.bounds.size.height / 2) + offsetBetweenButtons + (_flashBtn.bounds.size.height / 2));
             
             // offset from flashBtn is '20'
-            switchCameraBtn.center = CGPointMake(centerX, flashBtn.center.y + (flashBtn.bounds.size.height / 2) + 20 + (switchCameraBtn.bounds.size.height / 2));
+            _switchCameraBtn.center = CGPointMake(centerX, _flashBtn.center.y + (_flashBtn.bounds.size.height / 2) + offsetBetweenButtons + (_switchCameraBtn.bounds.size.height / 2));
         }
         
         // just so it's ready when we need it to be.
-        saveBtn.frame = switchCameraBtn.frame;
+        _saveBtn.frame = _switchCameraBtn.frame;
         
-        if (!_capturedImageV.image) {
-            for (UIButton * btn in @[backBtn, captureBtn, flashBtn, switchCameraBtn]) btn.hidden = NO;
-            
-            saveBtn.hidden = YES;
-            
+        /*
+         Show the proper controls for picture preview and picture stream
+         */
+        
+        // IF camera preview -- show preview controls / hide capture controls
+        if (_capturedImageV.image) {
+            // Hide
+            for (UIButton * btn in @[_captureBtn, _flashBtn, _switchCameraBtn]) btn.hidden = YES;
+            // Show
+            _saveBtn.hidden = NO;
         }
-        
+        // ELSE camera stream -- show capture controls / hide preview controls
         else {
-            captureBtn.hidden = YES;
-            flashBtn.hidden = YES;
-            switchCameraBtn.hidden = YES;
-            
-            saveBtn.hidden = NO;
+            // Show
+            for (UIButton * btn in @[_backBtn, _captureBtn, _flashBtn, _switchCameraBtn]) btn.hidden = NO;
+            // Hide
+            _saveBtn.hidden = YES;
         }
         
-        if (!_myDevice.isFlashAvailable) {
-            flashBtn.alpha = .2;
-            [flashBtn setTintColor:[self darkGreyColor]];
-        }
-        else {
-            flashBtn.alpha = .6;
-            
-            if (_myDevice.isFlashActive) {
-                [flashBtn setTintColor:[self greenColor]];
-            }
-            else {
-                [flashBtn setTintColor:[self redColor]];
-            }
-        }
+        [self evaluateFlashBtn];
         
     } completion:nil];
 }
@@ -446,13 +439,13 @@
         if (_myDevice.flashActive) {
             if([_myDevice lockForConfiguration:nil]) {
                 _myDevice.flashMode = AVCaptureFlashModeOff;
-                [flashBtn setTintColor:[self redColor]];
+                [_flashBtn setTintColor:[self redColor]];
             }
         }
         else {
             if([_myDevice lockForConfiguration:nil]) {
                 _myDevice.flashMode = AVCaptureFlashModeOn;
-                [flashBtn setTintColor:[self greenColor]];
+                [_flashBtn setTintColor:[self greenColor]];
             }
         }
         [_myDevice unlockForConfiguration];
@@ -469,8 +462,7 @@
         isImageResized = NO;
         isSaveWaitingForResizedImage = NO;
         
-        [previewCoverLayer removeFromSuperlayer];
-        previewCoverLayer = nil;
+        [self.view insertSubview:_rotationCover belowSubview:_imageStreamV];
         
         [self drawControls];
     }
@@ -505,20 +497,27 @@
             [_mySesh commitConfiguration];
         }
         
-        if (!_myDevice.isFlashAvailable) {
-            flashBtn.alpha = .2;
-            [flashBtn setTintColor:[self darkGreyColor]];
+        // Need to reset flash btn
+        [self evaluateFlashBtn];
+    }
+}
+
+- (void) evaluateFlashBtn {
+    // Evaluate Flash Available?
+    if (_myDevice.isFlashAvailable) {
+        _flashBtn.alpha = optionAvailableAlpha;
+        
+        // Evaluate Flash Active?
+        if (_myDevice.isFlashActive) {
+            [_flashBtn setTintColor:[self greenColor]];
         }
         else {
-            flashBtn.alpha = .6;
-            
-            if (_myDevice.isFlashActive) {
-                [flashBtn setTintColor:[self greenColor]];
-            }
-            else {
-                [flashBtn setTintColor:[self redColor]];
-            }
+            [_flashBtn setTintColor:[self redColor]];
         }
+    }
+    else {
+        _flashBtn.alpha = optionUnavailableAlpha;
+        [_flashBtn setTintColor:[self darkGreyColor]];
     }
 }
 
@@ -551,17 +550,17 @@
                 // this is all a touch wonky
                 double pX = aPoint.x / _imageStreamV.bounds.size.width;
                 double pY = aPoint.y / _imageStreamV.bounds.size.height;
-                double focus_x = pY;
+                double focusX = pY;
                 // x is equal to y but y is equal to inverse x ?
-                double focus_y = 1 - pX;
+                double focusY = 1 - pX;
                 
-                //NSLog(@"SC: about to focus at x: %f, y: %f", focus_x, focus_y);
+                //NSLog(@"SC: about to focus at x: %f, y: %f", focusX, focusY);
                 if([_myDevice isFocusPointOfInterestSupported] && [_myDevice isFocusModeSupported:AVCaptureFocusModeAutoFocus]) {
                     
                     if([_myDevice lockForConfiguration:nil]) {
-                        [_myDevice setFocusPointOfInterest:CGPointMake(focus_x, focus_y)];
+                        [_myDevice setFocusPointOfInterest:CGPointMake(focusX, focusY)];
                         [_myDevice setFocusMode:AVCaptureFocusModeAutoFocus];
-                        [_myDevice setExposurePointOfInterest:CGPointMake(focus_x, focus_y)];
+                        [_myDevice setExposurePointOfInterest:CGPointMake(focusX, focusY)];
                         [_myDevice setExposureMode:AVCaptureExposureModeContinuousAutoExposure];
                         //NSLog(@"SC: Done Focusing");
                     }
@@ -576,81 +575,65 @@
 
 - (void) resizeImage {
     
-    CGSize size = CGSizeMake(screenWidth, screenHeight);
-    BOOL isLandscape = NO;
-    if (self.interfaceOrientation == UIInterfaceOrientationLandscapeLeft || self.interfaceOrientation == UIInterfaceOrientationLandscapeRight) {
-        size = CGSizeMake(screenHeight, screenWidth);
-        isLandscape = YES;
-    }
+    // Set Orientation
+    BOOL isLandscape = UIInterfaceOrientationIsLandscape(self.interfaceOrientation) ? YES : NO;
     
-    if (_isSquareMode) size = squareV.bounds.size;
+    // Set Size
+    CGSize size = (isLandscape) ? CGSizeMake(screenHeight, screenWidth) : CGSizeMake(screenWidth, screenHeight);
+    if (_isSquareMode) size = _squareV.bounds.size;
     
-    UIGraphicsBeginImageContextWithOptions(size, YES, 2.0);
-    
-    // the width necessary to maintain aspect ratio at current screenHeight
-    if (!isLandscape) {
-        // IS CURRENTLY PORTRAIT
+    // Set Draw Rect
+    CGRect drawRect = (isLandscape) ? ({
+        // IS CURRENTLY LANDSCAPE
         
+        // targetHeight is the height our image would need to be at the current screenwidth if we maintained the image ratio.
+        CGFloat targetHeight = screenHeight * 0.75; // 3:4 ratio
+        
+        // we have to draw around the context of the screen
+        // our final image will be the image that is left in the frame of the context
+        // by drawing outside it, we remove the edges of the picture
+        CGFloat offsetTop = (targetHeight - size.height) / 2;
+        CGFloat offsetLeft = (screenHeight - size.width) / 2;
+        CGRectMake(-offsetLeft, -offsetTop, screenHeight, targetHeight);
+    }) : ({
+        // IS CURRENTLY PORTRAIT
         
         // targetWidth is the width our image would need to be at the current screenheight if we maintained the image ratio.
         CGFloat targetWidth = screenHeight * 0.75; // 3:4 ratio
-        
         
         // we have to draw around the context of the screen
         // our final image will be the image that is left in the frame of the context
         // by drawing outside it, we remove the edges of the picture
         CGFloat offsetTop = (screenHeight - size.height) / 2;
         CGFloat offsetLeft = (targetWidth - size.width) / 2;
-        
-        [_capturedImageV.image drawInRect:CGRectMake(-offsetLeft, -offsetTop, targetWidth, screenHeight)];
-    }
-    else {
-        
-        CGFloat targetHeight = screenHeight * 0.75; // 3:4 ratio
-        // targetHeight is the height our image would need to be at the current screenwidth (height in portrait) if we maintained the image ratio.
-        
-        
-        
-        CGFloat offsetTop = (targetHeight - size.height) / 2;
-        // screenheight is width in landscape
-        CGFloat offsetLeft = (screenHeight - size.width) / 2;
-        
-        [_capturedImageV.image drawInRect:CGRectMake(-offsetLeft, -offsetTop, screenHeight, targetHeight)];
-    }
+        CGRectMake(-offsetLeft, -offsetTop, targetWidth, screenHeight);
+    });
     
-    _capturedImageV.image = nil; // helps with a memory spike
+    // START CONTEXT
+    UIGraphicsBeginImageContextWithOptions(size, YES, 2.0);
+    [_capturedImageV.image drawInRect:drawRect];
     _capturedImageV.image = UIGraphicsGetImageFromCurrentImageContext();
-    
     UIGraphicsEndImageContext();
+    // END CONTEXT
     
     
-    
-    if (isSaveWaitingForResizedImage == YES) {
-        [self close];
-    }
+    // See if someone's waiting for resized image
+    if (isSaveWaitingForResizedImage == YES) [self close];
     if (isRotateWaitingForResizedImage == YES) _capturedImageV.contentMode = UIViewContentModeScaleAspectFit;
+    
     isImageResized = YES;
 }
 
 #pragma mark ROTATION
 
-- (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
-
-    CGRect targetSize;
+- (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation
+                                duration:(NSTimeInterval)duration {
     
     if (_capturedImageV.image) {
         _capturedImageV.backgroundColor = [UIColor blackColor];
         
-        // adding cover layer bc otherwise you see a glint of the camera when rotating and it looks weird.
-        // you could stop the stream, but it takes a sec to get it started again.
-        if (previewCoverLayer == nil) {
-            previewCoverLayer = [[CALayer alloc]init];
-            previewCoverLayer.backgroundColor = [UIColor blackColor].CGColor;
-            previewCoverLayer.bounds = CGRectMake(0, 0, screenHeight * 3, screenHeight * 3); // 1 full screen size either direction
-            previewCoverLayer.anchorPoint = CGPointMake(0.5, 0.5);
-            _imageStreamV.layer.masksToBounds = NO;
-            [_imageStreamV.layer addSublayer:previewCoverLayer];
-        }
+        // Move for rotation
+        [self.view insertSubview:_rotationCover belowSubview:_capturedImageV];
         
         if (!isImageResized) {
             isRotateWaitingForResizedImage = YES;
@@ -658,8 +641,9 @@
         }
     }
     
+    CGRect targetRect;
     if (UIInterfaceOrientationIsLandscape(toInterfaceOrientation)) {
-        targetSize = CGRectMake(0, 0, screenHeight, screenWidth);
+        targetRect = CGRectMake(0, 0, screenHeight, screenWidth);
         
         if (toInterfaceOrientation == UIInterfaceOrientationLandscapeLeft) {
             _captureVideoPreviewLayer.connection.videoOrientation = AVCaptureVideoOrientationLandscapeLeft;
@@ -671,17 +655,18 @@
     }
     else
     {
-        targetSize = CGRectMake(0, 0, screenWidth, screenHeight);
-        
+        targetRect = CGRectMake(0, 0, screenWidth, screenHeight);
         _captureVideoPreviewLayer.connection.videoOrientation = AVCaptureVideoOrientationPortrait;
     }
     
+    
+    
     [UIView animateWithDuration:duration delay:0 options:UIViewAnimationOptionCurveEaseOut animations:^{
         for (UIView * v in @[_capturedImageV, _imageStreamV, self.view]) {
-            v.frame = targetSize;
+            v.frame = targetRect;
         }
         
-        // not in for statement, cuz layers
+        // not in for statement, cuz layer
         _captureVideoPreviewLayer.frame = _imageStreamV.bounds;
         
     } completion:^(BOOL finished) {
@@ -693,22 +678,13 @@
 #pragma mark CLOSE
 
 - (void) close {
+    _rotationCover.alpha = 0.0;
+    [_delegate closeSimpleCam:self withImage:_capturedImageV.image];
     [self dismissViewControllerAnimated:YES completion:^{
         
-        [_delegate closeSimpleCam:self withImage:_capturedImageV.image];
-        
-        // CLEAN UP
-        lighteningImg = nil;
-        downloadImg = nil;
-        previousImg = nil;
-        cameraRotateImg = nil;
-        
-        [previewCoverLayer removeFromSuperlayer];
-        previewCoverLayer = nil;
-        
-        isRotateWaitingForResizedImage = NO;
         isImageResized = NO;
         isSaveWaitingForResizedImage = NO;
+        isRotateWaitingForResizedImage = NO;
         
         _capturedImageV.image = nil;
         [_capturedImageV removeFromSuperview];
