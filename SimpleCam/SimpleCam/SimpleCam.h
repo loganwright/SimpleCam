@@ -47,14 +47,28 @@
 
 @protocol SimpleCamDelegate
 
-- (void) closeSimpleCam:(SimpleCam *)simpleCam withImage:(UIImage *)image;
+/*!
+ Called when the user is done with SimpleCam.  If image is nil, user backed out w/o image.
+ */
+- (void) simpleCam:(SimpleCam *)simpleCam didFinishWithImage:(UIImage *)image;
 
 @end
 
 @interface SimpleCam : UIViewController
 
+/*!
+ Must adhere to SimpleCamDelegate protocol
+ */
 @property (retain, nonatomic) id <SimpleCamDelegate> delegate;
 
+/*!
+ Used if you'd like your pictures cropped to squareMode - defaults to NO (beta)
+ */
 @property BOOL isSquareMode;
+
+/*!
+ Use this to close SimpleCam - Otherwise, the captureSession may not close properly and may result in memory leaks.
+ */
+- (void) closeWithCompletion:(void (^)(void))completion;
 
 @end

@@ -52,7 +52,7 @@ Icon's generously provided by PixelLove:
 ###2. Your ViewController.h File
 
 - Import SimpleCam
-- Set up your view controller as a simpleCam delegate
+- Set up your view controller as a SimpleCam delegate
 
 ```Obj-C
 #import <UIKit/UIKit.h>
@@ -66,21 +66,29 @@ Icon's generously provided by PixelLove:
 ###3. Set Up Delegate
 
 - Add SimpleCam's Delegate method to your ViewController.m file
+- Close SimpleCam
+
+This is how SimpleCam will notify your ViewController that the user is finished with it.  If there is an image, then the user took a picture.  If there is not, then the user backed out of the camera without taking a photograph.  Make sure to close SimpleCam in this method using SimpleCam's custom close.  Otherwise, the captureSession may not close properly and may result in memory leaks.
 
 ```Obj-C
 #pragma mark SIMPLE CAM DELEGATE
 
-- (void) closeSimpleCamWithImage:(UIImage *)image {
+- (void) simpleCam:(SimpleCam *)simpleCam didFinishWithImage:(UIImage *)image {
+    
     if (image) {
-        // closed with image
+        // simple cam finished with image
     }
     else {
-        // user backed out w/o image
+        // simple cam finished w/o image
     }
+    
+    // Close simpleCam - use this as opposed to dismissViewController: to properly end photo session
+    [simpleCam closeWithCompletion:^{
+        NSLog(@"SimpleCam is done closing ... ");
+        // It is safe to launch other ViewControllers, for instance, an editor here.
+    }];
 }
 ```
-
-This is how SimpleCam will notify your ViewController that the user is finished with it.  If there is an image, then the user took a picture.  If there is not, then the user backed out of the camera without taking a photograph.
 
 ###4. Launch SimpleCam
 
@@ -91,17 +99,16 @@ SimpleCam * simpleCam = [[SimpleCam alloc]init];
 simpleCam.delegate = self;    
 [self presentViewController:simpleCam animated:YES completion:nil];
 ```
-If you'd like to launch simple cam when the user presses a button, you could add the above code to the IBAction method, like so:
+If you'd like to launch simple cam when the user presses a button, you could add the above code to the buttonPress method, like so:
 
 ```Obj-C
--(IBAction)buttonPress:(id)sender
-{        
+- (void) buttonPress:(id)sender {        
   SimpleCam * simpleCam = [[SimpleCam alloc]init];
   simpleCam.delegate = self;    
   [self presentViewController:simpleCam animated:YES completion:nil];
 }
 ```
-That's it, it's as  simple as that.  SimpleCam will take care of everything else.
+That's it, it's as  simple as that.  SimpleCam will take care of everything else!
 
 #Screen Shots
 

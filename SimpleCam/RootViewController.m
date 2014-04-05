@@ -39,16 +39,17 @@
     _tapLabel.autoresizingMask = UIViewAutoresizingFlexibleBottomMargin | UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleLeftMargin;
     [self.view addSubview:_tapLabel];
     
-    UITapGestureRecognizer * tap = [UITapGestureRecognizer new];
-    [tap addTarget:self action:@selector(handleTap:)];
-    [self.view addGestureRecognizer:tap];
-    
     _imgView = [UIImageView new];
     _imgView.bounds = CGRectMake(0, 0, 200, 300);
     _imgView.center = self.view.center;
     _imgView.autoresizingMask = UIViewAutoresizingFlexibleBottomMargin | UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleLeftMargin;
     _imgView.contentMode = UIViewContentModeScaleAspectFit;
     [self.view addSubview:_imgView];
+    
+    UITapGestureRecognizer * tap = [UITapGestureRecognizer new];
+    [tap addTarget:self action:@selector(handleTap:)];
+    [self.view addGestureRecognizer:tap];
+
 }
 
 - (void)didReceiveMemoryWarning
@@ -67,19 +68,25 @@
 
 #pragma mark SIMPLE CAM DELEGATE
 
-- (void) closeSimpleCam:(SimpleCam *)simpleCam withImage:(UIImage *)image {
+- (void) simpleCam:(SimpleCam *)simpleCam didFinishWithImage:(UIImage *)image {
+    
     if (image) {
-        // simple cam closed with image
+        // simple cam finished with image
         
         _imgView.image = image;
         _tapLabel.hidden = YES;
     }
     else {
-        // simple cam backed out w/o image
+        // simple cam finished w/o image
         
         _imgView.image = nil;
         _tapLabel.hidden = NO;
     }
+    
+    // Close simpleCam - use this as opposed to 'dismissViewController' otherwise, the captureSession may not close properly and may result in memory leaks.
+    [simpleCam closeWithCompletion:^{
+        NSLog(@"SimpleCam is done closing ... ");
+    }];
 }
 
 /*

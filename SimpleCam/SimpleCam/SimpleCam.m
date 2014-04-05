@@ -156,7 +156,7 @@ static CGFloat optionUnavailableAlpha = 0.2;
 	if (!input) {
 		// Handle the error appropriately.
 		NSLog(@"SC: ERROR: trying to open camera: %@", error);
-        [_delegate closeSimpleCam:self withImage:nil];
+        [_delegate simpleCam:self didFinishWithImage:_capturedImageV.image];
 	}
     
 	[_mySesh addInput:input];
@@ -467,7 +467,7 @@ static CGFloat optionUnavailableAlpha = 0.2;
         [self drawControls];
     }
     else {
-        [self close];
+        [_delegate simpleCam:self didFinishWithImage:_capturedImageV.image];
     }
 }
 
@@ -523,7 +523,7 @@ static CGFloat optionUnavailableAlpha = 0.2;
 
 - (void) saveBtnPressed:(id)sender {
     if (isImageResized) {
-        [self close];
+        [_delegate simpleCam:self didFinishWithImage:_capturedImageV.image];
     }
     else {
         isSaveWaitingForResizedImage = YES;
@@ -618,7 +618,7 @@ static CGFloat optionUnavailableAlpha = 0.2;
     
     
     // See if someone's waiting for resized image
-    if (isSaveWaitingForResizedImage == YES) [self close];
+    if (isSaveWaitingForResizedImage == YES) [_delegate simpleCam:self didFinishWithImage:_capturedImageV.image];
     if (isRotateWaitingForResizedImage == YES) _capturedImageV.contentMode = UIViewContentModeScaleAspectFit;
     
     isImageResized = YES;
@@ -653,8 +653,7 @@ static CGFloat optionUnavailableAlpha = 0.2;
         }
         
     }
-    else
-    {
+    else {
         targetRect = CGRectMake(0, 0, screenWidth, screenHeight);
         _captureVideoPreviewLayer.connection.videoOrientation = AVCaptureVideoOrientationPortrait;
     }
@@ -677,14 +676,22 @@ static CGFloat optionUnavailableAlpha = 0.2;
 
 #pragma mark CLOSE
 
-- (void) close {
+- (void) closeWithCompletion:(void (^)(void))completion {
+    
+    // Need alpha 0.0 before dismissing otherwise sticks out on dismissal
     _rotationCover.alpha = 0.0;
-    [_delegate closeSimpleCam:self withImage:_capturedImageV.image];
+    
     [self dismissViewControllerAnimated:YES completion:^{
         
+        completion();
+        
+        // Clean Up
         isImageResized = NO;
         isSaveWaitingForResizedImage = NO;
         isRotateWaitingForResizedImage = NO;
+        
+        [_mySesh stopRunning];
+        _mySesh = nil;
         
         _capturedImageV.image = nil;
         [_capturedImageV removeFromSuperview];
@@ -693,9 +700,8 @@ static CGFloat optionUnavailableAlpha = 0.2;
         [_imageStreamV removeFromSuperview];
         _imageStreamV = nil;
         
-        
-        [_mySesh stopRunning];
-        _mySesh = nil;
+        [_rotationCover removeFromSuperview];
+        _rotationCover = nil;
         
         _stillImageOutput = nil;
         _myDevice = nil;
@@ -705,7 +711,6 @@ static CGFloat optionUnavailableAlpha = 0.2;
         [self removeFromParentViewController];
         
     }];
-    
 }
 
 #pragma mark COLORS
