@@ -46,9 +46,7 @@ static CGFloat optionUnavailableAlpha = 0.2;
 #import "SimpleCam.h"
 
 @interface SimpleCam ()
-
 {
-    
     // Measurements
     CGFloat screenWidth;
     CGFloat screenHeight;
@@ -96,7 +94,6 @@ static CGFloat optionUnavailableAlpha = 0.2;
     if (self) {
         
         // Custom initialization
-        
     }
     return self;
 }
@@ -208,6 +205,8 @@ static CGFloat optionUnavailableAlpha = 0.2;
     
     // -- PREPARE OUR CONTROLS -- //
     [self loadControls];
+    
+    
 }
 
 - (void) viewDidAppear:(BOOL)animated {
@@ -216,6 +215,7 @@ static CGFloat optionUnavailableAlpha = 0.2;
         _rotationCover.alpha = 1;
     } completion:^(BOOL finished) {
         if (finished) {
+            [_delegate simpleCamDidLoadedCamera:self];
         }
     }];
 }
@@ -361,13 +361,18 @@ static CGFloat optionUnavailableAlpha = 0.2;
             for (UIButton * btn in @[_captureBtn, _flashBtn, _switchCameraBtn]) btn.hidden = YES;
             // Show
             _saveBtn.hidden = NO;
+            // Dynamic
+            _backBtn.hidden = _hideBackButton;
         }
         // ELSE camera stream -- show capture controls / hide preview controls
         else {
             // Show
-            for (UIButton * btn in @[_backBtn, _captureBtn, _flashBtn, _switchCameraBtn]) btn.hidden = NO;
+            for (UIButton * btn in @[_flashBtn, _switchCameraBtn]) btn.hidden = NO;
             // Hide
             _saveBtn.hidden = YES;
+            // Dynamic
+            _captureBtn.hidden = _hideCaptureButton;
+            _backBtn.hidden = _hideBackButton;
         }
         
         [self evaluateFlashBtn];
@@ -375,9 +380,7 @@ static CGFloat optionUnavailableAlpha = 0.2;
     } completion:nil];
 }
 
-#pragma mark BUTTON EVENTS
-
-- (void) captureBtnPressed:(id)sender {
+- (void) capturePhoto {
     isCapturingImage = YES;
     AVCaptureConnection *videoConnection = nil;
     for (AVCaptureConnection *connection in _stillImageOutput.connections)
@@ -429,9 +432,29 @@ static CGFloat optionUnavailableAlpha = 0.2;
          _capturedImageV.image = capturedImage;
          imageData = nil;
          
-         [self drawControls];
-         
+         // If we have disabled the photo preview directly fire the delegate callback
+         _disablePhotoPreview ? [self photoCaptured] : [self drawControls];
      }];
+}
+
+- (void) photoCaptured {
+    if (isImageResized) {
+        [_delegate simpleCam:self didFinishWithImage:_capturedImageV.image];
+    }
+    else {
+        isSaveWaitingForResizedImage = YES;
+        [self resizeImage];
+    }
+}
+
+#pragma mark BUTTON EVENTS
+
+- (void) captureBtnPressed:(id)sender {
+    [self capturePhoto];
+}
+
+- (void) saveBtnPressed:(id)sender {
+    [self photoCaptured];
 }
 
 - (void) flashBtnPressed:(id)sender {
@@ -518,16 +541,6 @@ static CGFloat optionUnavailableAlpha = 0.2;
     else {
         _flashBtn.alpha = optionUnavailableAlpha;
         [_flashBtn setTintColor:[self darkGreyColor]];
-    }
-}
-
-- (void) saveBtnPressed:(id)sender {
-    if (isImageResized) {
-        [_delegate simpleCam:self didFinishWithImage:_capturedImageV.image];
-    }
-    else {
-        isSaveWaitingForResizedImage = YES;
-        [self resizeImage];
     }
 }
 

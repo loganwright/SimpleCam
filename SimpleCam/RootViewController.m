@@ -63,6 +63,9 @@
 - (void) handleTap:(UITapGestureRecognizer *)tap {
     SimpleCam * simpleCam = [SimpleCam new];
     simpleCam.delegate= self;
+    [simpleCam setHideCaptureButton:YES];
+    [simpleCam setHideBackButton:YES];
+    [simpleCam setDisablePhotoPreview:YES];
     [self presentViewController:simpleCam animated:YES completion:nil];
 }
 
@@ -87,6 +90,11 @@
     [simpleCam closeWithCompletion:^{
         NSLog(@"SimpleCam is done closing ... ");
     }];
+}
+
+- (void) simpleCamDidLoadedCamera:(SimpleCam *)simpleCam {
+    NSLog(@"Camera loaded ... ");
+    [simpleCam capturePhoto];
 }
 
 /*

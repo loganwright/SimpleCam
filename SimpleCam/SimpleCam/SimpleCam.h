@@ -52,6 +52,11 @@
  */
 - (void) simpleCam:(SimpleCam *)simpleCam didFinishWithImage:(UIImage *)image;
 
+/*!
+ Called when the camera is successfully loaded into the view.
+ */
+- (void) simpleCamDidLoadedCamera:(SimpleCam *)simpleCam;
+
 @end
 
 @interface SimpleCam : UIViewController
@@ -66,9 +71,30 @@
  */
 @property BOOL isSquareMode;
 
+/*! 
+ Allow to hide the capture button. You can take programmaticaly photo using method 'capturePhoto'
+ */
+@property (nonatomic) BOOL hideCaptureButton;
+
+/*!
+ Allow to hide the back button. You want to programmatically control the view flow
+ */
+@property (nonatomic) BOOL hideBackButton;
+
+/*!
+ Allow to don't show the preview phase of the photo acquisition
+ */
+@property (nonatomic) BOOL disablePhotoPreview;
+
 /*!
  Use this to close SimpleCam - Otherwise, the captureSession may not close properly and may result in memory leaks.
  */
 - (void) closeWithCompletion:(void (^)(void))completion;
+
+/*!
+ Use this method for programmatically acquire a photo
+ */
+- (void) capturePhoto;
+
 
 @end
