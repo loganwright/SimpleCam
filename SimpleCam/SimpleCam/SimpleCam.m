@@ -208,6 +208,8 @@ static CGFloat optionUnavailableAlpha = 0.2;
     
     // -- PREPARE OUR CONTROLS -- //
     [self loadControls];
+    
+    
 }
 
 - (void) viewDidAppear:(BOOL)animated {
@@ -216,6 +218,7 @@ static CGFloat optionUnavailableAlpha = 0.2;
         _rotationCover.alpha = 1;
     } completion:^(BOOL finished) {
         if (finished) {
+            [_delegate simpleCamDidLoadedCamera:self];
         }
     }];
 }

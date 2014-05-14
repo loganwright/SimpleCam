@@ -52,6 +52,11 @@
  */
 - (void) simpleCam:(SimpleCam *)simpleCam didFinishWithImage:(UIImage *)image;
 
+/*!
+ Called when the camera is successfully loaded into the view.
+ */
+- (void) simpleCamDidLoadedCamera:(SimpleCam *)simpleCam;
+
 @end
 
 @interface SimpleCam : UIViewController
