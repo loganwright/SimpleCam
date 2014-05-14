@@ -432,15 +432,29 @@ static CGFloat optionUnavailableAlpha = 0.2;
          _capturedImageV.image = capturedImage;
          imageData = nil;
          
-         [self drawControls];
-         
+         // If we have disabled the photo preview directly fire the delegate callback
+         _disablePhotoPreview ? [self photoCaptured] : [self drawControls];
      }];
+}
+
+- (void) photoCaptured {
+    if (isImageResized) {
+        [_delegate simpleCam:self didFinishWithImage:_capturedImageV.image];
+    }
+    else {
+        isSaveWaitingForResizedImage = YES;
+        [self resizeImage];
+    }
 }
 
 #pragma mark BUTTON EVENTS
 
 - (void) captureBtnPressed:(id)sender {
     [self capturePhoto];
+}
+
+- (void) saveBtnPressed:(id)sender {
+    [self photoCaptured];
 }
 
 - (void) flashBtnPressed:(id)sender {
@@ -527,16 +541,6 @@ static CGFloat optionUnavailableAlpha = 0.2;
     else {
         _flashBtn.alpha = optionUnavailableAlpha;
         [_flashBtn setTintColor:[self darkGreyColor]];
-    }
-}
-
-- (void) saveBtnPressed:(id)sender {
-    if (isImageResized) {
-        [_delegate simpleCam:self didFinishWithImage:_capturedImageV.image];
-    }
-    else {
-        isSaveWaitingForResizedImage = YES;
-        [self resizeImage];
     }
 }
 

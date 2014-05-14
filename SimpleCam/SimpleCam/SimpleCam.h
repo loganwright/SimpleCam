@@ -82,6 +82,11 @@
 @property (nonatomic) BOOL hideBackButton;
 
 /*!
+ Allow to don't show the preview phase of the photo acquisition
+ */
+@property (nonatomic) BOOL disablePhotoPreview;
+
+/*!
  Use this to close SimpleCam - Otherwise, the captureSession may not close properly and may result in memory leaks.
  */
 - (void) closeWithCompletion:(void (^)(void))completion;
