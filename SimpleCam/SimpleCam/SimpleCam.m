@@ -302,6 +302,9 @@ static CGFloat optionUnavailableAlpha = 0.2;
 
 - (void) drawControls {
     
+    if (self.hideControls)
+        return;
+    
     static int offsetFromSide = 10;
     static int offsetBetweenButtons = 20;
     

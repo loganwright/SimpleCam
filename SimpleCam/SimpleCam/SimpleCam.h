@@ -77,6 +77,11 @@
 @property (nonatomic) BOOL hideCaptureButton;
 
 /*!
+ Allow to hide all controls (set to YE to show custom controls)
+ */
+@property (nonatomic) BOOL hideControls;
+
+/*!
  Allow to hide the back button. You want to programmatically control the view flow
  */
 @property (nonatomic) BOOL hideBackButton;
