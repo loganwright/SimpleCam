@@ -77,7 +77,7 @@
 @property (nonatomic) BOOL hideCaptureButton;
 
 /*!
- Allow to hide all controls (set to YE to show custom controls)
+ Allow to hide all controls (set to YES to show custom controls)
  */
 @property (nonatomic) BOOL hideControls;
 
