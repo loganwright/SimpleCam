@@ -39,7 +39,7 @@
     _imgView.autoresizingMask = UIViewAutoresizingFlexibleBottomMargin | UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleLeftMargin;
     _imgView.contentMode = UIViewContentModeScaleAspectFit;
     [self.view addSubview:_imgView];
-
+    
     _tapLabel = [UILabel new];
     _tapLabel.bounds = CGRectMake(0, 0, 200, 100);
     _tapLabel.text = @"TAP TO TAKE PHOTO";
@@ -62,19 +62,20 @@
         {
             SimpleCam * simpleCam = [SimpleCam new];
             simpleCam.delegate= self;
-
+            
             [self presentViewController:simpleCam animated:YES completion:nil];
         }
             break;
             
         case 1: // take photo immediately
-        {            
+        {
             self.takePhotoImmediately = YES;
             
             SimpleCam * simpleCam = [SimpleCam new];
             simpleCam.delegate= self;
-            [simpleCam setHideCaptureButton:YES];
-            [simpleCam setHideBackButton:YES];
+            // [simpleCam setHideCaptureButton:YES];
+            // [simpleCam setHideBackButton:YES];
+            simpleCam.hideAllControls = YES;
             [simpleCam setDisablePhotoPreview:YES];
             [self presentViewController:simpleCam animated:YES completion:nil];
         }
@@ -84,8 +85,7 @@
         {
             self.simpleCam = [SimpleCam new];
             self.simpleCam.delegate= self;
-            
-            [self.simpleCam setHideControls:YES];
+            [self.simpleCam setHideAllControls:YES];
             [self.simpleCam setDisablePhotoPreview:YES];
             
             CGRect frame;
@@ -95,6 +95,7 @@
             UIView *overlayView = [[UIView alloc] initWithFrame:frame];
             overlayView.backgroundColor = [UIColor blackColor];
             overlayView.alpha = 0.3;
+            overlayView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleTopMargin;
             
             UIImage *image = [UIImage imageNamed:@"shutter"];
             frame.size = image.size;
@@ -103,6 +104,7 @@
             UIButton *button = [[UIButton alloc] initWithFrame:frame];
             [button setImage:image forState:UIControlStateNormal];
             [button addTarget:self action:@selector(actionPhoto) forControlEvents:UIControlEventTouchUpInside];
+            button.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin;
             [overlayView addSubview:button];
             [self.simpleCam.view addSubview:overlayView];
             
@@ -129,7 +131,7 @@
     UIActionSheet *sheet = [[UIActionSheet alloc] initWithTitle:@"SimpleCam Options" delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:@"Default", @"Take Photo Immediately", @"Custom", nil];
     [sheet showInView:self.view];
     
-
+    
 }
 
 #pragma mark SIMPLE CAM DELEGATE
@@ -155,11 +157,12 @@
     }];
 }
 
-- (void) simpleCamDidLoadedCamera:(SimpleCam *)simpleCam {
+- (void) simpleCamDidLoadCameraIntoView:(SimpleCam *)simpleCam {
     NSLog(@"Camera loaded ... ");
     
-    if (self.takePhotoImmediately)
+    if (self.takePhotoImmediately) {
         [simpleCam capturePhoto];
+    }
 }
 
 @end

@@ -47,15 +47,19 @@
 
 @protocol SimpleCamDelegate
 
+@required
+
 /*!
  Called when the user is done with SimpleCam.  If image is nil, user backed out w/o image.
  */
 - (void) simpleCam:(SimpleCam *)simpleCam didFinishWithImage:(UIImage *)image;
 
+@optional
+
 /*!
  Called when the camera is successfully loaded into the view.
  */
-- (void) simpleCamDidLoadedCamera:(SimpleCam *)simpleCam;
+- (void) simpleCamDidLoadCameraIntoView:(SimpleCam *)simpleCam;
 
 @end
 
@@ -71,23 +75,21 @@
  */
 @property BOOL isSquareMode;
 
-/*! 
- Allow to hide the capture button. You can take programmaticaly photo using method 'capturePhoto'
- */
-@property (nonatomic) BOOL hideCaptureButton;
-
 /*!
  Allow to hide all controls (set to YES to show custom controls)
  */
-@property (nonatomic) BOOL hideControls;
-
+@property (nonatomic) BOOL hideAllControls;
 /*!
- Allow to hide the back button. You want to programmatically control the view flow
+ Allow to hide the capture button. You can take programmaticaly photo using method 'capturePhoto'
+ */
+@property (nonatomic) BOOL hideCaptureButton;
+/*!
+ Allow to hide the back button. Used if you want to programmatically control the view flow
  */
 @property (nonatomic) BOOL hideBackButton;
 
 /*!
- Allow to don't show the preview phase of the photo acquisition
+ Don't show the preview phase of the photo acquisition
  */
 @property (nonatomic) BOOL disablePhotoPreview;
 

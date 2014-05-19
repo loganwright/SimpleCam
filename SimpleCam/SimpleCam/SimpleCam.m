@@ -89,6 +89,8 @@ static CGFloat optionUnavailableAlpha = 0.2;
 
 @implementation SimpleCam;
 
+@synthesize hideAllControls = _hideAllControls, hideBackButton = _hideBackButton, hideCaptureButton = _hideCaptureButton;
+
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
@@ -215,7 +217,9 @@ static CGFloat optionUnavailableAlpha = 0.2;
         _rotationCover.alpha = 1;
     } completion:^(BOOL finished) {
         if (finished) {
-            [_delegate simpleCamDidLoadedCamera:self];
+            if ([(NSObject *)_delegate respondsToSelector:@selector(simpleCamDidLoadCameraIntoView:)]) {
+                [_delegate simpleCamDidLoadCameraIntoView:self];
+            }
         }
     }];
 }
@@ -302,8 +306,14 @@ static CGFloat optionUnavailableAlpha = 0.2;
 
 - (void) drawControls {
     
-    if (self.hideControls)
+    if (self.hideAllControls) {
+        
+        // In case they want to hide after they've been displayed
+        // for (UIButton * btn in @[_backBtn, _captureBtn, _flashBtn, _switchCameraBtn, _saveBtn]) {
+        // btn.hidden = YES;
+        // }
         return;
+    }
     
     static int offsetFromSide = 10;
     static int offsetBetweenButtons = 20;
@@ -358,13 +368,15 @@ static CGFloat optionUnavailableAlpha = 0.2;
          Show the proper controls for picture preview and picture stream
          */
         
-        // IF camera preview -- show preview controls / hide capture controls
+        // If camera preview -- show preview controls / hide capture controls
         if (_capturedImageV.image) {
             // Hide
             for (UIButton * btn in @[_captureBtn, _flashBtn, _switchCameraBtn]) btn.hidden = YES;
             // Show
             _saveBtn.hidden = NO;
-            // Dynamic
+            
+            
+            // Force User Preference
             _backBtn.hidden = _hideBackButton;
         }
         // ELSE camera stream -- show capture controls / hide preview controls
@@ -373,7 +385,8 @@ static CGFloat optionUnavailableAlpha = 0.2;
             for (UIButton * btn in @[_flashBtn, _switchCameraBtn]) btn.hidden = NO;
             // Hide
             _saveBtn.hidden = YES;
-            // Dynamic
+            
+            // Force User Preference
             _captureBtn.hidden = _hideCaptureButton;
             _backBtn.hidden = _hideBackButton;
         }
@@ -435,7 +448,7 @@ static CGFloat optionUnavailableAlpha = 0.2;
          _capturedImageV.image = capturedImage;
          imageData = nil;
          
-         // If we have disabled the photo preview directly fire the delegate callback
+         // If we have disabled the photo preview directly fire the delegate callback, otherwise, show user a preview
          _disablePhotoPreview ? [self photoCaptured] : [self drawControls];
      }];
 }
@@ -748,6 +761,32 @@ static CGFloat optionUnavailableAlpha = 0.2;
 
 - (BOOL)prefersStatusBarHidden {
     return YES;
+}
+
+#pragma mark GETTERS | SETTERS
+
+- (void) setHideAllControls:(BOOL)hideAllControls {
+    _hideAllControls = hideAllControls;
+    
+    // This way, hideAllControls can be used as a toggle.
+    [self drawControls];
+}
+- (BOOL) hideAllControls {
+    return _hideAllControls;
+}
+- (void) setHideBackButton:(BOOL)hideBackButton {
+    _hideBackButton = hideBackButton;
+    _backBtn.hidden = _hideBackButton;
+}
+- (BOOL) hideBackButton {
+    return _hideBackButton;
+}
+- (void) setHideCaptureButton:(BOOL)hideCaptureButton {
+    _hideCaptureButton = hideCaptureButton;
+    _captureBtn.hidden = YES;
+}
+- (BOOL) hideCaptureButton {
+    return _hideCaptureButton;
 }
 
 @end
