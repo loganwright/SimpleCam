@@ -110,6 +110,23 @@ If you'd like to launch simple cam when the user presses a button, you could add
 ```
 That's it, it's as  simple as that.  SimpleCam will take care of everything else!
 
+#ChangeLog
+
+v1.01 Released 19 May 2014
+
+Thanks @capezzbr & @dkhamsing for their contributions to this commit!
+
+- You can now capture photos programmatically by calling `[simpleCam capturePhoto]`
+- Now supports an overlay control system (more interaction possibilities coming soon!)
+- Disable Photo Preview to save photos as soon as they're captured: `simpleCam.disablePhotoPreview = YES`
+- New delegate method to be notified of when the camera stream is visible:
+
+```ObjC
+- (void) simpleCamDidLoadCameraIntoView:(SimpleCam *)simpleCam {
+    NSLog(@"Camera loaded ... ");
+}
+```
+
 #Screen Shots
 
 ###Portrait
