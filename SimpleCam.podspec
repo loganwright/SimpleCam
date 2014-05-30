@@ -25,8 +25,7 @@ I hope you find the project as useful as I did!"
   # s.osx.deployment_target = '10.7'
   s.requires_arc = true
 
-  s.source_files = 'SimpleCam/SimpleCam
-  /SimpleCam.h', 'SimpleCam/SimpleCam/SimpleCam.m'
+  s.source_files = 'SimpleCam/SimpleCam/SimpleCam.{h,m}'
   s.resources = 'SimpleCam/SimpleCam/Icons/*.png'
 
   # s.ios.exclude_files = 'Classes/osx'
