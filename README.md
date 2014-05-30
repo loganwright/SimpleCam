@@ -41,6 +41,12 @@ Icon's generously provided by PixelLove:
 </a> 
 </p>
 
+### CocoaPods
+
+```
+pod 'SimpleCam', '~> 0.1'
+```
+
 #Adding SimpleCam to Your Project
 
 ###1. Add SimpleCam Folder to Xcode
