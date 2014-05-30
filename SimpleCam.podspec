@@ -15,7 +15,7 @@ If you're capturing photographs with UIImagePicker, or via AVFoundation on the h
 I hope you find the project as useful as I did!"
   s.homepage         = "http://github.com/LoganWright"
   s.screenshots      = "https://github.com/LoganWright/SimpleCam/blob/master/SimpleCam/Images/SimpleCamCover.png?raw=true"
-  s.license          = 'MPL 2.0'
+  s.license          = {:type => 'MPL 2.0'}
   s.author           = { "Logan Wright" => "logan.william.wright@gmail.com" }
   s.source           = { :git => "https://github.com/LoganWright/SimpleCam.git", :tag => s.version.to_s }
   s.social_media_url = 'https://twitter.com/logmaestro'
@@ -29,8 +29,8 @@ I hope you find the project as useful as I did!"
   /SimpleCam.h', 'SimpleCam/SimpleCam/SimpleCam.m'
   s.resources = 'SimpleCam/SimpleCam/Icons/*.png'
 
-  s.ios.exclude_files = 'Classes/osx'
-  s.osx.exclude_files = 'Classes/ios'
+  # s.ios.exclude_files = 'Classes/osx'
+  # s.osx.exclude_files = 'Classes/ios'
   # s.public_header_files = 'Classes/**/*.h'
   # s.frameworks = 'SomeFramework', 'AnotherFramework'
   # s.dependency 'JSONKit', '~> 1.4'
