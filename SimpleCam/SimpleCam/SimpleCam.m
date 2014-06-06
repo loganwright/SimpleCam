@@ -141,6 +141,11 @@ static CGFloat optionUnavailableAlpha = 0.2;
 	[_imageStreamV.layer addSublayer:_captureVideoPreviewLayer];
 	
     // rear camera: 0 front camera: 1
+    NSArray *devices = [AVCaptureDevice devicesWithMediaType:AVMediaTypeVideo];
+    if (devices.count==0) {
+        NSLog(@"SC: No devices found (for example: simulator)");
+        return;
+    }
     _myDevice = [AVCaptureDevice devicesWithMediaType:AVMediaTypeVideo][0];
     
     if ([_myDevice isFlashAvailable] && _myDevice.flashActive && [_myDevice lockForConfiguration:nil]) {
