@@ -89,13 +89,14 @@ static CGFloat optionUnavailableAlpha = 0.2;
 
 @implementation SimpleCam;
 
-@synthesize hideAllControls = _hideAllControls, hideBackButton = _hideBackButton, hideCaptureButton = _hideCaptureButton;
+@synthesize hideAllControls = _hideAllControls, hideBackButton = _hideBackButton, hideCaptureButton = _hideCaptureButton, controlAnimateDuration = _controlAnimateDuration;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
         
         // Custom initialization
+        self.controlAnimateDuration = 0.25;
     }
     return self;
 }
@@ -326,7 +327,7 @@ static CGFloat optionUnavailableAlpha = 0.2;
     static CGFloat portraitFontSize = 16.0;
     static CGFloat landscapeFontSize = 12.5;
     
-    [UIView animateWithDuration:.25 delay:0 options:UIViewAnimationOptionCurveEaseOut  animations:^{
+    [UIView animateWithDuration:self.controlAnimateDuration delay:0 options:UIViewAnimationOptionCurveEaseOut  animations:^{
         
         if (UIInterfaceOrientationIsPortrait(self.interfaceOrientation)) {
             
@@ -792,6 +793,13 @@ static CGFloat optionUnavailableAlpha = 0.2;
 }
 - (BOOL) hideCaptureButton {
     return _hideCaptureButton;
+}
+
+- (void) setControlAnimateDuration:(float)controlAnimateDuration {
+    _controlAnimateDuration = controlAnimateDuration;
+}
+- (float) controlAnimateDuration {
+    return _controlAnimateDuration;
 }
 
 @end
