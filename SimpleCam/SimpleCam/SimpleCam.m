@@ -272,7 +272,7 @@ static CGFloat optionUnavailableAlpha = 0.2;
     
     _captureBtn = [UIButton buttonWithType:UIButtonTypeSystem];
     [_captureBtn addTarget:self action:@selector(captureBtnPressed:) forControlEvents:UIControlEventTouchUpInside];
-    [_captureBtn setTitle:@"C\nA\nP\nT\nU\nR\nE" forState:UIControlStateNormal];
+    [_captureBtn setTitle:NSLocalizedString(@"C\nA\nP\nT\nU\nR\nE", @"SimpleCam CAPTURE button for horizontal") forState:UIControlStateNormal];
     [_captureBtn setTitleColor:[self darkGreyColor] forState:UIControlStateNormal];
     _captureBtn.titleLabel.font = [UIFont systemFontOfSize:12.5];
     _captureBtn.titleLabel.numberOfLines = 0;
@@ -335,7 +335,7 @@ static CGFloat optionUnavailableAlpha = 0.2;
             _backBtn.center = CGPointMake(offsetFromSide + (_backBtn.bounds.size.width / 2), centerY);
             
             // offset from backbtn is '20'
-            [_captureBtn setTitle:@"CAPTURE" forState:UIControlStateNormal];
+            [_captureBtn setTitle:NSLocalizedString(@"CAPTURE", @"SimpleCam CAPTURE button") forState:UIControlStateNormal];
             _captureBtn.titleLabel.font = [UIFont systemFontOfSize:portraitFontSize];
             _captureBtn.bounds = CGRectMake(0, 0, 120, 40);
             _captureBtn.center = CGPointMake(_backBtn.center.x + (_backBtn.bounds.size.width / 2) + offsetBetweenButtons + (_captureBtn.bounds.size.width / 2), centerY);
@@ -354,7 +354,7 @@ static CGFloat optionUnavailableAlpha = 0.2;
             _backBtn.center = CGPointMake(centerX, offsetFromSide + (_backBtn.bounds.size.height / 2));
             
             // offset from backbtn is '20'
-            [_captureBtn setTitle:@"C\nA\nP\nT\nU\nR\nE" forState:UIControlStateNormal];
+            [_captureBtn setTitle:NSLocalizedString(@"C\nA\nP\nT\nU\nR\nE", @"SimpleCam CAPTURE button for horizontal") forState:UIControlStateNormal];
             _captureBtn.titleLabel.font = [UIFont systemFontOfSize:landscapeFontSize];
             _captureBtn.bounds = CGRectMake(0, 0, 40, 120);
             _captureBtn.center = CGPointMake(centerX, _backBtn.center.y + (_backBtn.bounds.size.height / 2) + offsetBetweenButtons + (_captureBtn.bounds.size.height / 2));
