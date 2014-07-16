@@ -402,6 +402,9 @@ static CGFloat optionUnavailableAlpha = 0.2;
 }
 
 - (void) capturePhoto {
+    if (isCapturingImage) {
+        return;
+    }
     isCapturingImage = YES;
     AVCaptureConnection *videoConnection = nil;
     for (AVCaptureConnection *connection in _stillImageOutput.connections)
