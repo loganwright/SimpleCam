@@ -33,7 +33,7 @@ I hope you find the project as useful as I did!
 </p>
 
 <p>
-Icon's generously provided by PixelLove:
+Icons generously provided by PixelLove:
 </p>
 <p>
 <a href="http://pixellove.com" target="_blank"> 
