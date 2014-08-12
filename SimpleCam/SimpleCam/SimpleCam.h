@@ -92,6 +92,10 @@
  Don't show the preview phase of the photo acquisition
  */
 @property (nonatomic) BOOL disablePhotoPreview;
+/*!
+ Control animation duration
+ */
+@property (nonatomic) float controlAnimateDuration;
 
 /*!
  Use this to close SimpleCam - Otherwise, the captureSession may not close properly and may result in memory leaks.

@@ -96,6 +96,7 @@ static CGFloat optionUnavailableAlpha = 0.2;
     if (self) {
         
         // Custom initialization
+        self.controlAnimateDuration = 0.25;
     }
     return self;
 }
@@ -326,7 +327,7 @@ static CGFloat optionUnavailableAlpha = 0.2;
     static CGFloat portraitFontSize = 16.0;
     static CGFloat landscapeFontSize = 12.5;
     
-    [UIView animateWithDuration:.25 delay:0 options:UIViewAnimationOptionCurveEaseOut  animations:^{
+    [UIView animateWithDuration:self.controlAnimateDuration delay:0 options:UIViewAnimationOptionCurveEaseOut  animations:^{
         
         if (UIInterfaceOrientationIsPortrait(self.interfaceOrientation)) {
             
