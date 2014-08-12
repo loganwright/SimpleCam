@@ -89,7 +89,7 @@ static CGFloat optionUnavailableAlpha = 0.2;
 
 @implementation SimpleCam;
 
-@synthesize hideAllControls = _hideAllControls, hideBackButton = _hideBackButton, hideCaptureButton = _hideCaptureButton, controlAnimateDuration = _controlAnimateDuration;
+@synthesize hideAllControls = _hideAllControls, hideBackButton = _hideBackButton, hideCaptureButton = _hideCaptureButton;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
@@ -793,13 +793,6 @@ static CGFloat optionUnavailableAlpha = 0.2;
 }
 - (BOOL) hideCaptureButton {
     return _hideCaptureButton;
-}
-
-- (void) setControlAnimateDuration:(float)controlAnimateDuration {
-    _controlAnimateDuration = controlAnimateDuration;
-}
-- (float) controlAnimateDuration {
-    return _controlAnimateDuration;
 }
 
 @end
