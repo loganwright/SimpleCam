@@ -668,9 +668,8 @@ static CGFloat optionUnavailableAlpha = 0.2;
 
 #pragma mark ROTATION
 
-- (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation
-                                duration:(NSTimeInterval)duration {
-    
+- (void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
+
     if (_capturedImageV.image) {
         _capturedImageV.backgroundColor = [UIColor blackColor];
         
