@@ -109,10 +109,14 @@ static CGFloat optionUnavailableAlpha = 0.2;
     self.view.clipsToBounds = NO;
     self.view.backgroundColor = [UIColor blackColor];
     
-    screenWidth = self.view.bounds.size.width;
-    screenHeight = self.view.bounds.size.height;
-    
-    if  (UIInterfaceOrientationIsLandscape(self.interfaceOrientation)) self.view.frame = CGRectMake(0, 0, screenHeight, screenWidth);
+    /*
+     The layout has shifted in iOS 8 causing problems.  I realize that this isn't the best solution, so if you're looking at this, feel free to submit a Pull Request.  This is an older project.
+     */
+    CGRect screen = [UIScreen mainScreen].bounds;
+    CGFloat currentWidth = CGRectGetWidth(screen);
+    CGFloat currentHeight = CGRectGetHeight(screen);
+    screenWidth = currentWidth < currentHeight ? currentWidth : currentHeight;
+    screenHeight = currentWidth < currentHeight ? currentHeight : currentWidth;
     
     if (_imageStreamV == nil) _imageStreamV = [[UIView alloc]init];
     _imageStreamV.alpha = 0;
