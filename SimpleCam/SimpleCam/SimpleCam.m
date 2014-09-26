@@ -106,6 +106,89 @@ static CGFloat optionUnavailableAlpha = 0.2;
     
     [super viewDidLoad];
     
+    if (floor(NSFoundationVersionNumber) <= NSFoundationVersionNumber_iOS_7_1) {
+        // Pre iOS 8 -- No camera auth required.
+        [self setup];
+    }
+    else {
+        // iOS 8
+        
+        // Thanks: http://stackoverflow.com/a/24684021/2611971
+        AVAuthorizationStatus status = [AVCaptureDevice authorizationStatusForMediaType:AVMediaTypeVideo];
+        switch (status) {
+            case AVAuthorizationStatusAuthorized:
+                // Do setup early if possible.
+                [self setup];
+                break;
+            default:
+                break;
+        }
+        
+    }
+    
+    
+}
+
+- (void) viewDidAppear:(BOOL)animated {
+    
+    if (floor(NSFoundationVersionNumber) <= NSFoundationVersionNumber_iOS_7_1) {
+        // Pre iOS 8 -- No camera auth required.
+        [self animateIntoView];
+    }
+    else {
+        // iOS 8
+        AVAuthorizationStatus status = [AVCaptureDevice authorizationStatusForMediaType:AVMediaTypeVideo];
+        switch (status) {
+            case AVAuthorizationStatusDenied:
+            case AVAuthorizationStatusRestricted:
+                NSLog(@"SC: Not authorized, or restricted");
+                [self.delegate simpleCamNotAuthorizedForCameraUse:self];
+                break;
+            case AVAuthorizationStatusAuthorized:
+                [self animateIntoView];
+                break;
+            case AVAuthorizationStatusNotDetermined: {
+                // not determined
+                [AVCaptureDevice requestAccessForMediaType:AVMediaTypeVideo completionHandler:^(BOOL granted) {
+                    if(granted){
+                        [self setup];
+                        [self animateIntoView];
+                    } else {
+                        [self.delegate simpleCam:self didFinishWithImage:nil];
+                    }
+                }];
+            }
+            default:
+                break;
+        }
+    }
+}
+
+- (void) animateIntoView
+{
+    [UIView animateWithDuration:.25 delay:0 options:UIViewAnimationOptionCurveEaseOut animations:^{
+        _imageStreamV.alpha = 1;
+        _rotationCover.alpha = 1;
+    } completion:^(BOOL finished) {
+        if (finished) {
+            if ([(NSObject *)_delegate respondsToSelector:@selector(simpleCamDidLoadCameraIntoView:)]) {
+                [_delegate simpleCamDidLoadCameraIntoView:self];
+            }
+        }
+    }];
+}
+
+- (void)didReceiveMemoryWarning {
+    [super didReceiveMemoryWarning];
+    NSLog(@"SC: DID RECIEVE MEMORY WARNING");
+    // Dispose of any resources that can be recreated.
+}
+
+#pragma mark - Setup
+
+
+- (void) setup {
+    
     self.view.clipsToBounds = NO;
     self.view.backgroundColor = [UIColor blackColor];
     
@@ -217,27 +300,6 @@ static CGFloat optionUnavailableAlpha = 0.2;
     
     // -- PREPARE OUR CONTROLS -- //
     [self loadControls];
-    
-    
-}
-
-- (void) viewDidAppear:(BOOL)animated {
-    [UIView animateWithDuration:.25 delay:0 options:UIViewAnimationOptionCurveEaseOut animations:^{
-        _imageStreamV.alpha = 1;
-        _rotationCover.alpha = 1;
-    } completion:^(BOOL finished) {
-        if (finished) {
-            if ([(NSObject *)_delegate respondsToSelector:@selector(simpleCamDidLoadCameraIntoView:)]) {
-                [_delegate simpleCamDidLoadCameraIntoView:self];
-            }
-        }
-    }];
-}
-
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-    NSLog(@"SC: DID RECIEVE MEMORY WARNING");
-    // Dispose of any resources that can be recreated.
 }
 
 #pragma mark CAMERA CONTROLS

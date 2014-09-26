@@ -165,4 +165,10 @@
     }
 }
 
+- (void) simpleCamNotAuthorizedForCameraUse:(SimpleCam *)simpleCam {
+    [simpleCam closeWithCompletion:^{
+        NSLog(@"SimpleCam is done closing ... Not Authorized");
+    }];
+}
+
 @end

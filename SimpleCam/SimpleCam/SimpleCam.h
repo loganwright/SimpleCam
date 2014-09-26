@@ -49,6 +49,8 @@
 
 @required
 
+- (void) simpleCamNotAuthorizedForCameraUse:(SimpleCam *)simpleCam;
+
 /*!
  Called when the user is done with SimpleCam.  If image is nil, user backed out w/o image.
  */
