@@ -20,7 +20,7 @@ I hope you find the project as useful as I did!"
   s.source           = { :git => "https://github.com/LoganWright/SimpleCam.git", :tag => s.version.to_s }
   s.social_media_url = 'https://twitter.com/logmaestro'
 
-  s.platform     = :ios, '7.0'
+  s.platform     = :ios, '7.1'
   # s.ios.deployment_target = '5.0'
   # s.osx.deployment_target = '10.7'
   s.requires_arc = true
