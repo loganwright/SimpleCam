@@ -131,6 +131,8 @@ static CGFloat optionUnavailableAlpha = 0.2;
 
 - (void) viewDidAppear:(BOOL)animated {
     
+    [super viewDidAppear:animated];
+    
     if (floor(NSFoundationVersionNumber) <= NSFoundationVersionNumber_iOS_7_1) {
         // Pre iOS 8 -- No camera auth required.
         [self animateIntoView];
@@ -489,7 +491,10 @@ static CGFloat optionUnavailableAlpha = 0.2;
     
     [_stillImageOutput captureStillImageAsynchronouslyFromConnection:videoConnection completionHandler: ^(CMSampleBufferRef imageSampleBuffer, NSError *error)
      {
-         
+         if(!CMSampleBufferIsValid(imageSampleBuffer))
+         {
+             return;
+         }
          NSData *imageData = [AVCaptureStillImageOutput jpegStillImageNSDataRepresentation:imageSampleBuffer];
          
          UIImage * capturedImage = [[UIImage alloc]initWithData:imageData scale:1];
