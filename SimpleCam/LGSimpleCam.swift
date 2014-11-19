@@ -41,7 +41,8 @@ class LGSimpleCam: UIViewController {
     
     // MARK: Views
     
-    var imageStreamView = UIView()
+    private let imageStreamView = UIView()
+    private let capturedImagePreview = UIImageView()
     
     // MARK: LifeCycle
     
@@ -57,7 +58,8 @@ class LGSimpleCam: UIViewController {
         self.setupImageStream()
         self.setupCaptureVideoPreviewLayer()
         self.setupSession()
-        self.startSession()
+        self.setupCapturedImagePreview()
+        self.setupFocusSupport()
     }
     
     func setupView() {
@@ -67,12 +69,7 @@ class LGSimpleCam: UIViewController {
     }
     
     func setupImageStream() {
-        if DEBUG {
-//            self.imageStreamView.backgroundColor = UIColor.cyanColor()
-            self.imageStreamView.layer.borderWidth = 5.0
-            self.imageStreamView.layer.borderColor = UIColor.redColor().CGColor
-        }
-        else {
+        if !DEBUG {
             self.imageStreamView.alpha = 0.0
         }
         self.imageStreamView.layer.addSublayer(self.captureVideoPreviewLayer)
@@ -94,10 +91,16 @@ class LGSimpleCam: UIViewController {
     }
     
     func setupSession() {
+        self.setupDevice()
+        self.startSession()
+    }
+    
+    func setupDevice() {
         let devices = AVCaptureDevice.devicesWithMediaType(AVMediaTypeVideo)
         if devices.count > 0 {
             self.myDevice = devices.first as AVCaptureDevice
             self.setupInput()
+            self.setupOutput()
         } else {
             println("LGSimpleCam: Unable to find device!")
         }
@@ -123,6 +126,79 @@ class LGSimpleCam: UIViewController {
         
         // TODO: Vary based on orientation
         self.captureVideoPreviewLayer.connection.videoOrientation = AVCaptureVideoOrientation.Portrait
+    }
+    
+    func setupCapturedImagePreview() {
+        if DEBUG {
+            self.capturedImagePreview.layer.borderWidth = 5.0
+            self.capturedImagePreview.layer.borderColor = UIColor.greenColor().CGColor
+        }
+        self.capturedImagePreview.userInteractionEnabled = true
+        self.capturedImagePreview.backgroundColor = UIColor.clearColor()
+        self.capturedImagePreview.contentMode = .ScaleAspectFill
+        self.view.addSubview(self.capturedImagePreview)
+        self.setupCapturedImagePreviewConstraints()
+    }
+    
+    func setupCapturedImagePreviewConstraints() {
+        self.capturedImagePreview.setTranslatesAutoresizingMaskIntoConstraints(false)
+        var capturedImagePreviewConstriants = NSLayoutConstraint.layoutConstraintsMatchingBoundsOfView(self.capturedImagePreview, toFrameOfView: self.view)
+        self.view.addConstraints(capturedImagePreviewConstriants)
+    }
+    
+    func setupFocusSupport() {
+        self.capturedImagePreview.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "handleFocusTap:"))
+    }
+    
+    // MARK: Focus Tap
+    
+    func handleFocusTap(tap: UITapGestureRecognizer) {
+        if self.capturedImagePreview.image == nil {
+            let point: CGPoint = tap.locationInView(self.imageStreamView)
+            if self.myDevice != nil {
+                // TODO: Move to setup so this check only runs once
+                if self.myDevice.focusPointOfInterestSupported && self.myDevice.exposurePointOfInterestSupported {
+                    // we subtract the point from the width to inverse the focal point
+                    // focus points of interest represents a CGPoint where
+                    // {0,0} corresponds to the top left of the picture area, and
+                    // {1,1} corresponds to the bottom right in landscape mode with the home button on the right—
+                    // THIS APPLIES EVEN IF THE DEVICE IS IN PORTRAIT MODE
+                    // (from docs)
+                    // this is all a touch wonky
+                    var pX = point.x / CGRectGetWidth(self.imageStreamView.bounds)
+                    var pY = point.y / CGRectGetHeight(self.imageStreamView.bounds)
+                    var focusX = pY;
+                    // x is equal to y but y is equal to inverse x ?
+                    var focusY = 1 - pX;
+                    
+                    var error: NSError?
+                    let locked = self.myDevice.lockForConfiguration(&error)
+                    if locked {
+                        let focusPoint = CGPoint(x: focusX, y: focusY)
+                        self.myDevice.focusPointOfInterest = focusPoint
+                        if self.myDevice.isFocusModeSupported(.AutoFocus) {
+                            self.myDevice.focusMode = .AutoFocus
+                        } else {
+                            println("LGSimpleCam: .AutoFocus not supported!")
+                        }
+                        
+                        self.myDevice.exposurePointOfInterest = focusPoint
+                        if self.myDevice.isExposureModeSupported(.ContinuousAutoExposure) {
+                            self.myDevice.exposureMode = .ContinuousAutoExposure
+                        } else {
+                            println("LGSimpleCam: .ContinuousAutoExposure not supported!")
+                        }
+                        self.myDevice.unlockForConfiguration()
+                    } else if error != nil {
+                        println("LGSimpleCam: Error unlocking for focus: \(error!)")
+                    } else {
+                        println("LGSimpleCam: Unable to unlock to focus")
+                    }
+                }
+            } else {
+                println("LGSimpleCam: FocusPOI or ExposurePOI not supported!")
+            }
+        }
     }
     
     // MARK: Rotation
