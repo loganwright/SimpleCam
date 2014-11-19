@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		800D4D251A19538200F5CB14 /* LGSimpleCam.swift in Sources */ = {isa = PBXBuildFile; fileRef = 800D4D241A19538200F5CB14 /* LGSimpleCam.swift */; };
 		8058D4E618E9C72F0031A3B1 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8058D4E518E9C72F0031A3B1 /* Foundation.framework */; };
 		8058D4E818E9C72F0031A3B1 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8058D4E718E9C72F0031A3B1 /* CoreGraphics.framework */; };
 		8058D4EA18E9C72F0031A3B1 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8058D4E918E9C72F0031A3B1 /* UIKit.framework */; };
@@ -49,6 +50,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		800D4D231A19538100F5CB14 /* SimpleCam-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "SimpleCam-Bridging-Header.h"; sourceTree = "<group>"; };
+		800D4D241A19538200F5CB14 /* LGSimpleCam.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LGSimpleCam.swift; sourceTree = "<group>"; };
 		8058D4E218E9C72F0031A3B1 /* SimpleCam.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SimpleCam.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		8058D4E518E9C72F0031A3B1 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		8058D4E718E9C72F0031A3B1 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -151,6 +154,8 @@
 				8058D53718E9C7DD0031A3B1 /* RootViewController.m */,
 				8058D4F718E9C72F0031A3B1 /* Images.xcassets */,
 				8058D4EC18E9C72F0031A3B1 /* Supporting Files */,
+				800D4D241A19538200F5CB14 /* LGSimpleCam.swift */,
+				800D4D231A19538100F5CB14 /* SimpleCam-Bridging-Header.h */,
 			);
 			path = SimpleCam;
 			sourceTree = "<group>";
@@ -335,6 +340,7 @@
 			files = (
 				8058D4F618E9C72F0031A3B1 /* AppDelegate.m in Sources */,
 				8058D52218E9C7C70031A3B1 /* SimpleCam.m in Sources */,
+				800D4D251A19538200F5CB14 /* LGSimpleCam.swift in Sources */,
 				8058D53818E9C7DD0031A3B1 /* RootViewController.m in Sources */,
 				8058D4F218E9C72F0031A3B1 /* main.m in Sources */,
 			);
@@ -453,10 +459,14 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CLANG_ENABLE_MODULES = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "SimpleCam/SimpleCam-Prefix.pch";
 				INFOPLIST_FILE = "SimpleCam/SimpleCam-Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "SimpleCam/SimpleCam-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				USER_HEADER_SEARCH_PATHS = "";
 				WRAPPER_EXTENSION = app;
 			};
@@ -467,10 +477,13 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CLANG_ENABLE_MODULES = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "SimpleCam/SimpleCam-Prefix.pch";
 				INFOPLIST_FILE = "SimpleCam/SimpleCam-Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "SimpleCam/SimpleCam-Bridging-Header.h";
 				USER_HEADER_SEARCH_PATHS = "";
 				WRAPPER_EXTENSION = app;
 			};

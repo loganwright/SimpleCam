@@ -7,7 +7,7 @@
 //
 
 #import "RootViewController.h"
-
+#import "SimpleCam-Swift.h"
 @interface RootViewController () <UIActionSheetDelegate>
 
 @property (strong, nonatomic) UIImageView * imgView;
@@ -128,9 +128,11 @@
 
 - (void) handleTap:(UITapGestureRecognizer *)tap {
     
-    UIActionSheet *sheet = [[UIActionSheet alloc] initWithTitle:@"SimpleCam Options" delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:@"Default", @"Take Photo Immediately", @"Custom", nil];
-    [sheet showInView:self.view];
-    
+//    UIActionSheet *sheet = [[UIActionSheet alloc] initWithTitle:@"SimpleCam Options" delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:@"Default", @"Take Photo Immediately", @"Custom", nil];
+//    [sheet showInView:self.view];
+
+    LGSimpleCam *simpleCam = [LGSimpleCam new];
+    [self presentViewController:simpleCam animated:YES completion:nil];
     
 }
 
