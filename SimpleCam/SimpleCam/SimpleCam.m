@@ -278,6 +278,7 @@ static CGFloat optionUnavailableAlpha = 0.2;
         _squareV.layer.borderColor = [UIColor colorWithWhite:1 alpha:.8].CGColor;
         _squareV.bounds = CGRectMake(0, 0, screenWidth, screenWidth);
         _squareV.center = self.view.center;
+        _squareV.userInteractionEnabled = NO;
         
         _squareV.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin;
         
