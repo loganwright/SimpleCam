@@ -60,6 +60,9 @@ static CGFloat optionUnavailableAlpha = 0.2;
     
     // Capture Toggle
     BOOL isCapturingImage;
+    
+    // Animate a "flash" on-screen when a photo is taken
+    UIView *cameraCaptureFlashAnimation;
 }
 
 // Used to cover animation flicker during rotation
@@ -303,6 +306,17 @@ static CGFloat optionUnavailableAlpha = 0.2;
     
     // -- PREPARE OUR CONTROLS -- //
     [self loadControls];
+    
+    // -- PREPARE CAMERA FLASH ANIMATION -- //
+    if (cameraCaptureFlashAnimation) {
+        [cameraCaptureFlashAnimation removeFromSuperview];
+        cameraCaptureFlashAnimation = nil;
+    }
+    
+    cameraCaptureFlashAnimation = [[UIView alloc] initWithFrame:self.view.frame];
+    cameraCaptureFlashAnimation.backgroundColor = [UIColor whiteColor];
+    cameraCaptureFlashAnimation.alpha = 0.0f;
+    [self.view addSubview:cameraCaptureFlashAnimation];
 }
 
 #pragma mark CAMERA CONTROLS
@@ -492,6 +506,15 @@ static CGFloat optionUnavailableAlpha = 0.2;
     
     [_stillImageOutput captureStillImageAsynchronouslyFromConnection:videoConnection completionHandler: ^(CMSampleBufferRef imageSampleBuffer, NSError *error)
      {
+         // Camera "flash" animation
+         [UIView animateWithDuration:0.2f animations:^{
+             cameraCaptureFlashAnimation.alpha = 1.0f;
+         } completion:^(BOOL finished) {
+             [UIView animateWithDuration:0.2f animations:^{
+                 cameraCaptureFlashAnimation.alpha = 0.0f;
+             }];
+         }];
+         
          if(!CMSampleBufferIsValid(imageSampleBuffer))
          {
              return;

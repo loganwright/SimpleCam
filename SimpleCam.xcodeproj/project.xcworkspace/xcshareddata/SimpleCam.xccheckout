@@ -10,29 +10,29 @@
 	<string>SimpleCam</string>
 	<key>IDESourceControlProjectOriginsDictionary</key>
 	<dict>
-		<key>21835551-A8FF-428F-BD29-5FA8D0C02687</key>
-		<string>https://github.com/LoganWright/SimpleCam.git</string>
+		<key>B08128E43CF8FD47F28F099A420046D02BCA9F92</key>
+		<string>https://github.com/jeffreality/SimpleCam.git</string>
 	</dict>
 	<key>IDESourceControlProjectPath</key>
-	<string>SimpleCam.xcodeproj/project.xcworkspace</string>
+	<string>SimpleCam.xcodeproj</string>
 	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
 	<dict>
-		<key>21835551-A8FF-428F-BD29-5FA8D0C02687</key>
+		<key>B08128E43CF8FD47F28F099A420046D02BCA9F92</key>
 		<string>../..</string>
 	</dict>
 	<key>IDESourceControlProjectURL</key>
-	<string>https://github.com/LoganWright/SimpleCam.git</string>
+	<string>https://github.com/jeffreality/SimpleCam.git</string>
 	<key>IDESourceControlProjectVersion</key>
-	<integer>110</integer>
+	<integer>111</integer>
 	<key>IDESourceControlProjectWCCIdentifier</key>
-	<string>21835551-A8FF-428F-BD29-5FA8D0C02687</string>
+	<string>B08128E43CF8FD47F28F099A420046D02BCA9F92</string>
 	<key>IDESourceControlProjectWCConfigurations</key>
 	<array>
 		<dict>
 			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
 			<string>public.vcs.git</string>
 			<key>IDESourceControlWCCIdentifierKey</key>
-			<string>21835551-A8FF-428F-BD29-5FA8D0C02687</string>
+			<string>B08128E43CF8FD47F28F099A420046D02BCA9F92</string>
 			<key>IDESourceControlWCCName</key>
 			<string>SimpleCam</string>
 		</dict>
