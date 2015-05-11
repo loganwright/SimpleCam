@@ -53,6 +53,9 @@ static CGFloat optionUnavailableAlpha = 0.2;
     CGFloat topX;
     CGFloat topY;
     
+    // Zoom scale
+    CGFloat lastScale;
+    
     // Resize Toggles
     BOOL isImageResized;
     BOOL isSaveWaitingForResizedImage;
@@ -215,13 +218,17 @@ static CGFloat optionUnavailableAlpha = 0.2;
     _capturedImageV.frame = _imageStreamV.frame; // just to even it out
     _capturedImageV.backgroundColor = [UIColor clearColor];
     _capturedImageV.userInteractionEnabled = YES;
-    _capturedImageV.contentMode = UIViewContentModeScaleAspectFill;
+    _capturedImageV.contentMode = UIViewContentModeTopLeft;//UIViewContentModeScaleAspectFit;
     [self.view insertSubview:_capturedImageV aboveSubview:_imageStreamV];
     
     // for focus
     UITapGestureRecognizer * focusTap = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(tapSent:)];
     focusTap.numberOfTapsRequired = 1;
     [_capturedImageV addGestureRecognizer:focusTap];
+    
+    // for zoom
+    UIPinchGestureRecognizer * zoomPinch = [[UIPinchGestureRecognizer alloc]initWithTarget:self action:@selector(pinchToZoom:)];
+    [_capturedImageV addGestureRecognizer:zoomPinch];
     
     // SETTING UP CAM
     if (_mySesh == nil) _mySesh = [[AVCaptureSession alloc] init];
@@ -704,6 +711,37 @@ static CGFloat optionUnavailableAlpha = 0.2;
     }
 }
 
+#pragma mark PINCH TO ZOOM
+
+- (void) pinchToZoom:(UIPinchGestureRecognizer *)gestureRecognizer {
+    
+    if([gestureRecognizer state] == UIGestureRecognizerStateBegan) {
+        // Reset the last scale, necessary if there are multiple objects with different scales
+        lastScale = [gestureRecognizer scale];
+    }
+    
+    if ([gestureRecognizer state] == UIGestureRecognizerStateBegan ||
+        [gestureRecognizer state] == UIGestureRecognizerStateChanged) {
+        
+        CGFloat currentScale = [[_imageStreamV.layer valueForKeyPath:@"transform.scale"] floatValue];
+        
+        // Constants to adjust the max/min values of zoom
+        const CGFloat kMaxScale = 2.0;
+        const CGFloat kMinScale = 1.0;
+        
+        CGFloat newScale = 1 -  (lastScale - [gestureRecognizer scale]);
+        newScale = MIN(newScale, kMaxScale / currentScale);
+        newScale = MAX(newScale, kMinScale / currentScale);
+        
+        NSLog(@"scale: %f", newScale);
+        
+        CGAffineTransform transform = CGAffineTransformScale([_imageStreamV transform], newScale, newScale);
+        _imageStreamV.transform = transform;
+        
+        lastScale = [gestureRecognizer scale];  // Store the previous scale factor for the next pinch gesture call
+    }
+}
+
 #pragma mark RESIZE IMAGE
 
 - (void) resizeImage {
@@ -790,7 +828,8 @@ static CGFloat optionUnavailableAlpha = 0.2;
         _captureVideoPreviewLayer.connection.videoOrientation = AVCaptureVideoOrientationPortrait;
     }
     
-    
+    // reset zoom
+    _imageStreamV.transform = CGAffineTransformIdentity;
     
     [UIView animateWithDuration:duration delay:0 options:UIViewAnimationOptionCurveEaseOut animations:^{
         for (UIView * v in @[_capturedImageV, _imageStreamV, self.view]) {
