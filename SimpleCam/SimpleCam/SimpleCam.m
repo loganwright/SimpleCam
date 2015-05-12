@@ -497,6 +497,9 @@ static CGFloat optionUnavailableAlpha = 0.2;
         return;
     }
     isCapturingImage = YES;
+    
+    _imageStreamV.alpha = 0.0f;
+    
     AVCaptureConnection *videoConnection = nil;
     for (AVCaptureConnection *connection in _stillImageOutput.connections)
     {
