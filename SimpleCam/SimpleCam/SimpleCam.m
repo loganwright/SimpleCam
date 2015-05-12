@@ -54,7 +54,7 @@ static CGFloat optionUnavailableAlpha = 0.2;
     CGFloat topY;
     
     // Zoom scale
-    CGFloat lastScale;
+    CGFloat scale;
     
     // Resize Toggles
     BOOL isImageResized;
@@ -218,7 +218,7 @@ static CGFloat optionUnavailableAlpha = 0.2;
     _capturedImageV.frame = _imageStreamV.frame; // just to even it out
     _capturedImageV.backgroundColor = [UIColor clearColor];
     _capturedImageV.userInteractionEnabled = YES;
-    _capturedImageV.contentMode = UIViewContentModeTopLeft;//UIViewContentModeScaleAspectFit;
+    _capturedImageV.contentMode = UIViewContentModeScaleAspectFit;
     [self.view insertSubview:_capturedImageV aboveSubview:_imageStreamV];
     
     // for focus
@@ -545,7 +545,8 @@ static CGFloat optionUnavailableAlpha = 0.2;
              // front camera active
              
              // flip to look the same as the camera
-             if (UIInterfaceOrientationIsPortrait(self.interfaceOrientation)) capturedImage = [UIImage imageWithCGImage:capturedImage.CGImage scale:capturedImage.scale orientation:UIImageOrientationLeftMirrored];
+             if (UIInterfaceOrientationIsPortrait(self.interfaceOrientation))
+                 capturedImage = [UIImage imageWithCGImage:capturedImage.CGImage scale:capturedImage.scale orientation:UIImageOrientationLeftMirrored];
              else {
                  if (self.interfaceOrientation == UIInterfaceOrientationLandscapeRight)
                      capturedImage = [UIImage imageWithCGImage:capturedImage.CGImage scale:capturedImage.scale orientation:UIImageOrientationDownMirrored];
@@ -556,7 +557,8 @@ static CGFloat optionUnavailableAlpha = 0.2;
          }
          
          isCapturingImage = NO;
-         _capturedImageV.image = capturedImage;
+         _capturedImageV.alpha = 0.0f;
+         _capturedImageV.image = [self crop:capturedImage];
          imageData = nil;
          
          // If we have disabled the photo preview directly fire the delegate callback, otherwise, show user a preview
@@ -717,7 +719,7 @@ static CGFloat optionUnavailableAlpha = 0.2;
     
     if([gestureRecognizer state] == UIGestureRecognizerStateBegan) {
         // Reset the last scale, necessary if there are multiple objects with different scales
-        lastScale = [gestureRecognizer scale];
+        scale = [gestureRecognizer scale];
     }
     
     if ([gestureRecognizer state] == UIGestureRecognizerStateBegan ||
@@ -729,7 +731,7 @@ static CGFloat optionUnavailableAlpha = 0.2;
         const CGFloat kMaxScale = 2.0;
         const CGFloat kMinScale = 1.0;
         
-        CGFloat newScale = 1 -  (lastScale - [gestureRecognizer scale]);
+        CGFloat newScale = 1 -  (scale - [gestureRecognizer scale]);
         newScale = MIN(newScale, kMaxScale / currentScale);
         newScale = MAX(newScale, kMinScale / currentScale);
         
@@ -738,7 +740,7 @@ static CGFloat optionUnavailableAlpha = 0.2;
         CGAffineTransform transform = CGAffineTransformScale([_imageStreamV transform], newScale, newScale);
         _imageStreamV.transform = transform;
         
-        lastScale = [gestureRecognizer scale];  // Store the previous scale factor for the next pinch gesture call
+        scale = [gestureRecognizer scale];  // Store the previous scale factor for the next pinch gesture call
     }
 }
 
@@ -793,6 +795,25 @@ static CGFloat optionUnavailableAlpha = 0.2;
     if (isRotateWaitingForResizedImage == YES) _capturedImageV.contentMode = UIViewContentModeScaleAspectFit;
     
     isImageResized = YES;
+}
+
+- (UIImage *)crop:(UIImage *)img {
+    if (scale == 0) scale = 1;
+    
+    NSInteger newW = img.size.width / scale;
+    NSInteger newH = img.size.height / scale;
+    NSInteger newX1 = (img.size.width / 2) - (newW / 2);
+    NSInteger newY1 = (img.size.height / 2) - (newH / 2);
+    
+    CGRect rect = { -newX1, -newY1, img.size.width, img.size.height };
+    
+    UIGraphicsBeginImageContextWithOptions(CGSizeMake(newW, newH), true, 1.0);
+    
+    [img drawInRect:rect];
+    UIImage *result = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    
+    return result;
 }
 
 #pragma mark ROTATION
