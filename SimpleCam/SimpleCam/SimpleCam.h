@@ -91,6 +91,15 @@
 @property (nonatomic) BOOL hideBackButton;
 
 /*!
+ Allow pinch-to-zoom function for software "zoom"
+ */
+@property (nonatomic) BOOL enableZoom;
+/*!
+ "Flash" the screen when a photo is taken (helps visually represent the photo has been taken successfully)
+ */
+@property (nonatomic) BOOL enableCameraCaptureAnimation;
+
+/*!
  Don't show the preview phase of the photo acquisition
  */
 @property (nonatomic) BOOL disablePhotoPreview;
