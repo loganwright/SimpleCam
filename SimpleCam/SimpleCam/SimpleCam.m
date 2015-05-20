@@ -320,7 +320,7 @@ static CGFloat optionUnavailableAlpha = 0.2;
         cameraCaptureFlashAnimation = nil;
     }
     
-    cameraCaptureFlashAnimation = [[UIView alloc] initWithFrame:self.view.frame];
+    cameraCaptureFlashAnimation = [[UIView alloc] initWithFrame:self.view.bounds];
     cameraCaptureFlashAnimation.backgroundColor = [UIColor whiteColor];
     cameraCaptureFlashAnimation.alpha = 0.0f;
     [self.view addSubview:cameraCaptureFlashAnimation];
