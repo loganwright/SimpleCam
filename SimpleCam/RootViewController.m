@@ -88,6 +88,9 @@
             [self.simpleCam setHideAllControls:YES];
             [self.simpleCam setDisablePhotoPreview:YES];
             
+            [self.simpleCam setEnableZoom:YES];
+            [self.simpleCam setEnableCameraCaptureAnimation:YES];
+            
             CGRect frame;
             frame.size = CGSizeMake(self.view.frame.size.width, 120);
             frame.origin.x = 0;

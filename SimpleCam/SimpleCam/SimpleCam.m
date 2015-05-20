@@ -96,6 +96,7 @@ static CGFloat optionUnavailableAlpha = 0.2;
 @implementation SimpleCam;
 
 @synthesize hideAllControls = _hideAllControls, hideBackButton = _hideBackButton, hideCaptureButton = _hideCaptureButton;
+@synthesize enableZoom = _enableZoom, enableCameraCaptureAnimation = _enableCameraCaptureAnimation;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
@@ -227,8 +228,10 @@ static CGFloat optionUnavailableAlpha = 0.2;
     [_capturedImageV addGestureRecognizer:focusTap];
     
     // for zoom
-    UIPinchGestureRecognizer * zoomPinch = [[UIPinchGestureRecognizer alloc]initWithTarget:self action:@selector(pinchToZoom:)];
-    [_capturedImageV addGestureRecognizer:zoomPinch];
+    if (_enableZoom) {
+        UIPinchGestureRecognizer * zoomPinch = [[UIPinchGestureRecognizer alloc]initWithTarget:self action:@selector(pinchToZoom:)];
+        [_capturedImageV addGestureRecognizer:zoomPinch];
+    }
     
     // SETTING UP CAM
     if (_mySesh == nil) _mySesh = [[AVCaptureSession alloc] init];
@@ -269,7 +272,6 @@ static CGFloat optionUnavailableAlpha = 0.2;
     NSDictionary * outputSettings = [[NSDictionary alloc] initWithObjectsAndKeys: AVVideoCodecJPEG, AVVideoCodecKey, nil];
     [_stillImageOutput setOutputSettings:outputSettings];
     [_mySesh addOutput:_stillImageOutput];
-    
     
 	[_mySesh startRunning];
     
@@ -315,15 +317,18 @@ static CGFloat optionUnavailableAlpha = 0.2;
     [self loadControls];
     
     // -- PREPARE CAMERA FLASH ANIMATION -- //
-    if (cameraCaptureFlashAnimation) {
-        [cameraCaptureFlashAnimation removeFromSuperview];
-        cameraCaptureFlashAnimation = nil;
-    }
     
-    cameraCaptureFlashAnimation = [[UIView alloc] initWithFrame:self.view.bounds];
-    cameraCaptureFlashAnimation.backgroundColor = [UIColor whiteColor];
-    cameraCaptureFlashAnimation.alpha = 0.0f;
-    [self.view addSubview:cameraCaptureFlashAnimation];
+    if (_enableCameraCaptureAnimation) {
+        if (cameraCaptureFlashAnimation) {
+            [cameraCaptureFlashAnimation removeFromSuperview];
+            cameraCaptureFlashAnimation = nil;
+        }
+        
+        cameraCaptureFlashAnimation = [[UIView alloc] initWithFrame:self.view.bounds];
+        cameraCaptureFlashAnimation.backgroundColor = [UIColor whiteColor];
+        cameraCaptureFlashAnimation.alpha = 0.0f;
+        [self.view addSubview:cameraCaptureFlashAnimation];
+    }
 }
 
 #pragma mark CAMERA CONTROLS
@@ -517,13 +522,15 @@ static CGFloat optionUnavailableAlpha = 0.2;
     [_stillImageOutput captureStillImageAsynchronouslyFromConnection:videoConnection completionHandler: ^(CMSampleBufferRef imageSampleBuffer, NSError *error)
      {
          // Camera "flash" animation
-         [UIView animateWithDuration:0.2f animations:^{
-             cameraCaptureFlashAnimation.alpha = 1.0f;
-         } completion:^(BOOL finished) {
+         if (_enableCameraCaptureAnimation) {
              [UIView animateWithDuration:0.2f animations:^{
-                 cameraCaptureFlashAnimation.alpha = 0.0f;
+                 cameraCaptureFlashAnimation.alpha = 1.0f;[cameraCaptureFlashAnimation setNeedsDisplay];
+             } completion:^(BOOL finished) {
+                 [UIView animateWithDuration:0.2f animations:^{
+                     cameraCaptureFlashAnimation.alpha = 0.0f;
+                 }];
              }];
-         }];
+         }
          
          if(!CMSampleBufferIsValid(imageSampleBuffer))
          {
