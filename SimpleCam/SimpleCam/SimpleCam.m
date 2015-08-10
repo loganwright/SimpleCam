@@ -745,8 +745,6 @@ static CGFloat optionUnavailableAlpha = 0.2;
         newScale = MIN(newScale, kMaxScale / currentScale);
         newScale = MAX(newScale, kMinScale / currentScale);
         
-        NSLog(@"scale: %f", newScale);
-        
         CGAffineTransform transform = CGAffineTransformScale([_imageStreamV transform], newScale, newScale);
         _imageStreamV.transform = transform;
         
@@ -808,10 +806,10 @@ static CGFloat optionUnavailableAlpha = 0.2;
 }
 
 - (UIImage *)crop:(UIImage *)img {
-    if (scale == 0) scale = 1;
+    CGFloat currentScale = [[_imageStreamV.layer valueForKeyPath:@"transform.scale"] floatValue];
     
-    NSInteger newW = img.size.width / scale;
-    NSInteger newH = img.size.height / scale;
+    NSInteger newW = img.size.width / currentScale;
+    NSInteger newH = img.size.height / currentScale;
     NSInteger newX1 = (img.size.width / 2) - (newW / 2);
     NSInteger newY1 = (img.size.height / 2) - (newH / 2);
     
