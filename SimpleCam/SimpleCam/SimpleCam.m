@@ -53,6 +53,9 @@ static CGFloat optionUnavailableAlpha = 0.2;
     CGFloat topX;
     CGFloat topY;
     
+    // Zoom scale
+    CGFloat scale;
+    
     // Resize Toggles
     BOOL isImageResized;
     BOOL isSaveWaitingForResizedImage;
@@ -60,6 +63,9 @@ static CGFloat optionUnavailableAlpha = 0.2;
     
     // Capture Toggle
     BOOL isCapturingImage;
+    
+    // Animate a "flash" on-screen when a photo is taken
+    UIView *cameraCaptureFlashAnimation;
 }
 
 // Used to cover animation flicker during rotation
@@ -90,6 +96,7 @@ static CGFloat optionUnavailableAlpha = 0.2;
 @implementation SimpleCam;
 
 @synthesize hideAllControls = _hideAllControls, hideBackButton = _hideBackButton, hideCaptureButton = _hideCaptureButton;
+@synthesize enableZoom = _enableZoom, enableCameraCaptureAnimation = _enableCameraCaptureAnimation;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
@@ -212,13 +219,19 @@ static CGFloat optionUnavailableAlpha = 0.2;
     _capturedImageV.frame = _imageStreamV.frame; // just to even it out
     _capturedImageV.backgroundColor = [UIColor clearColor];
     _capturedImageV.userInteractionEnabled = YES;
-    _capturedImageV.contentMode = UIViewContentModeScaleAspectFill;
+    _capturedImageV.contentMode = UIViewContentModeScaleAspectFit;
     [self.view insertSubview:_capturedImageV aboveSubview:_imageStreamV];
     
     // for focus
     UITapGestureRecognizer * focusTap = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(tapSent:)];
     focusTap.numberOfTapsRequired = 1;
     [_capturedImageV addGestureRecognizer:focusTap];
+    
+    // for zoom
+    if (_enableZoom) {
+        UIPinchGestureRecognizer * zoomPinch = [[UIPinchGestureRecognizer alloc]initWithTarget:self action:@selector(pinchToZoom:)];
+        [_capturedImageV addGestureRecognizer:zoomPinch];
+    }
     
     // SETTING UP CAM
     if (_mySesh == nil) _mySesh = [[AVCaptureSession alloc] init];
@@ -259,7 +272,6 @@ static CGFloat optionUnavailableAlpha = 0.2;
     NSDictionary * outputSettings = [[NSDictionary alloc] initWithObjectsAndKeys: AVVideoCodecJPEG, AVVideoCodecKey, nil];
     [_stillImageOutput setOutputSettings:outputSettings];
     [_mySesh addOutput:_stillImageOutput];
-    
     
 	[_mySesh startRunning];
     
@@ -303,6 +315,20 @@ static CGFloat optionUnavailableAlpha = 0.2;
     
     // -- PREPARE OUR CONTROLS -- //
     [self loadControls];
+    
+    // -- PREPARE CAMERA FLASH ANIMATION -- //
+    
+    if (_enableCameraCaptureAnimation) {
+        if (cameraCaptureFlashAnimation) {
+            [cameraCaptureFlashAnimation removeFromSuperview];
+            cameraCaptureFlashAnimation = nil;
+        }
+        
+        cameraCaptureFlashAnimation = [[UIView alloc] initWithFrame:self.view.bounds];
+        cameraCaptureFlashAnimation.backgroundColor = [UIColor whiteColor];
+        cameraCaptureFlashAnimation.alpha = 0.0f;
+        [self.view addSubview:cameraCaptureFlashAnimation];
+    }
 }
 
 #pragma mark CAMERA CONTROLS
@@ -476,6 +502,9 @@ static CGFloat optionUnavailableAlpha = 0.2;
         return;
     }
     isCapturingImage = YES;
+    
+    _imageStreamV.alpha = 0.0f;
+    
     AVCaptureConnection *videoConnection = nil;
     for (AVCaptureConnection *connection in _stillImageOutput.connections)
     {
@@ -492,6 +521,17 @@ static CGFloat optionUnavailableAlpha = 0.2;
     
     [_stillImageOutput captureStillImageAsynchronouslyFromConnection:videoConnection completionHandler: ^(CMSampleBufferRef imageSampleBuffer, NSError *error)
      {
+         // Camera "flash" animation
+         if (_enableCameraCaptureAnimation) {
+             [UIView animateWithDuration:0.2f animations:^{
+                 cameraCaptureFlashAnimation.alpha = 1.0f;[cameraCaptureFlashAnimation setNeedsDisplay];
+             } completion:^(BOOL finished) {
+                 [UIView animateWithDuration:0.2f animations:^{
+                     cameraCaptureFlashAnimation.alpha = 0.0f;
+                 }];
+             }];
+         }
+         
          if(!CMSampleBufferIsValid(imageSampleBuffer))
          {
              return;
@@ -515,7 +555,8 @@ static CGFloat optionUnavailableAlpha = 0.2;
              // front camera active
              
              // flip to look the same as the camera
-             if (UIInterfaceOrientationIsPortrait(self.interfaceOrientation)) capturedImage = [UIImage imageWithCGImage:capturedImage.CGImage scale:capturedImage.scale orientation:UIImageOrientationLeftMirrored];
+             if (UIInterfaceOrientationIsPortrait(self.interfaceOrientation))
+                 capturedImage = [UIImage imageWithCGImage:capturedImage.CGImage scale:capturedImage.scale orientation:UIImageOrientationLeftMirrored];
              else {
                  if (self.interfaceOrientation == UIInterfaceOrientationLandscapeRight)
                      capturedImage = [UIImage imageWithCGImage:capturedImage.CGImage scale:capturedImage.scale orientation:UIImageOrientationDownMirrored];
@@ -526,7 +567,8 @@ static CGFloat optionUnavailableAlpha = 0.2;
          }
          
          isCapturingImage = NO;
-         _capturedImageV.image = capturedImage;
+         _capturedImageV.alpha = 0.0f;
+         _capturedImageV.image = [self crop:capturedImage];
          imageData = nil;
          
          // If we have disabled the photo preview directly fire the delegate callback, otherwise, show user a preview
@@ -681,6 +723,35 @@ static CGFloat optionUnavailableAlpha = 0.2;
     }
 }
 
+#pragma mark PINCH TO ZOOM
+
+- (void) pinchToZoom:(UIPinchGestureRecognizer *)gestureRecognizer {
+    
+    if([gestureRecognizer state] == UIGestureRecognizerStateBegan) {
+        // Reset the last scale, necessary if there are multiple objects with different scales
+        scale = [gestureRecognizer scale];
+    }
+    
+    if ([gestureRecognizer state] == UIGestureRecognizerStateBegan ||
+        [gestureRecognizer state] == UIGestureRecognizerStateChanged) {
+        
+        CGFloat currentScale = [[_imageStreamV.layer valueForKeyPath:@"transform.scale"] floatValue];
+        
+        // Constants to adjust the max/min values of zoom
+        const CGFloat kMaxScale = 2.0;
+        const CGFloat kMinScale = 1.0;
+        
+        CGFloat newScale = 1 -  (scale - [gestureRecognizer scale]);
+        newScale = MIN(newScale, kMaxScale / currentScale);
+        newScale = MAX(newScale, kMinScale / currentScale);
+        
+        CGAffineTransform transform = CGAffineTransformScale([_imageStreamV transform], newScale, newScale);
+        _imageStreamV.transform = transform;
+        
+        scale = [gestureRecognizer scale];  // Store the previous scale factor for the next pinch gesture call
+    }
+}
+
 #pragma mark RESIZE IMAGE
 
 - (void) resizeImage {
@@ -734,6 +805,25 @@ static CGFloat optionUnavailableAlpha = 0.2;
     isImageResized = YES;
 }
 
+- (UIImage *)crop:(UIImage *)img {
+    CGFloat currentScale = [[_imageStreamV.layer valueForKeyPath:@"transform.scale"] floatValue];
+    
+    NSInteger newW = img.size.width / currentScale;
+    NSInteger newH = img.size.height / currentScale;
+    NSInteger newX1 = (img.size.width / 2) - (newW / 2);
+    NSInteger newY1 = (img.size.height / 2) - (newH / 2);
+    
+    CGRect rect = { -newX1, -newY1, img.size.width, img.size.height };
+    
+    UIGraphicsBeginImageContextWithOptions(CGSizeMake(newW, newH), true, 1.0);
+    
+    [img drawInRect:rect];
+    UIImage *result = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    
+    return result;
+}
+
 #pragma mark ROTATION
 
 - (void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
@@ -767,7 +857,8 @@ static CGFloat optionUnavailableAlpha = 0.2;
         _captureVideoPreviewLayer.connection.videoOrientation = AVCaptureVideoOrientationPortrait;
     }
     
-    
+    // reset zoom
+    _imageStreamV.transform = CGAffineTransformIdentity;
     
     [UIView animateWithDuration:duration delay:0 options:UIViewAnimationOptionCurveEaseOut animations:^{
         for (UIView * v in @[_capturedImageV, _imageStreamV, self.view]) {
