@@ -616,6 +616,7 @@ static CGFloat optionUnavailableAlpha = 0.2;
 
 - (void) backBtnPressed:(id)sender {
     if (_capturedImageV.image) {
+        _imageStreamV.alpha = 1.0f;
         _capturedImageV.contentMode = UIViewContentModeScaleAspectFill;
         _capturedImageV.backgroundColor = [UIColor clearColor];
         _capturedImageV.image = nil;
