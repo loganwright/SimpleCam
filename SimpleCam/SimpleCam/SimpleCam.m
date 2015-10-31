@@ -219,7 +219,7 @@ static CGFloat optionUnavailableAlpha = 0.2;
     _capturedImageV.frame = _imageStreamV.frame; // just to even it out
     _capturedImageV.backgroundColor = [UIColor clearColor];
     _capturedImageV.userInteractionEnabled = YES;
-    _capturedImageV.contentMode = UIViewContentModeScaleAspectFit;
+    _capturedImageV.contentMode = UIViewContentModeScaleAspectFill;
     [self.view insertSubview:_capturedImageV aboveSubview:_imageStreamV];
     
     // for focus
