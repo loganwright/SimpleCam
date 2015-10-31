@@ -503,8 +503,6 @@ static CGFloat optionUnavailableAlpha = 0.2;
     }
     isCapturingImage = YES;
     
-    _imageStreamV.alpha = 0.0f;
-    
     AVCaptureConnection *videoConnection = nil;
     for (AVCaptureConnection *connection in _stillImageOutput.connections)
     {
@@ -567,8 +565,11 @@ static CGFloat optionUnavailableAlpha = 0.2;
          }
          
          isCapturingImage = NO;
-         _capturedImageV.alpha = 0.0f;
          _capturedImageV.image = [self crop:capturedImage];
+         // show captured image view
+         _capturedImageV.alpha = 1.0f;
+         // hide image stream view
+         _imageStreamV.alpha = 0.0f;
          imageData = nil;
          
          // If we have disabled the photo preview directly fire the delegate callback, otherwise, show user a preview
