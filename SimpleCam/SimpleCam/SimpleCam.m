@@ -219,7 +219,7 @@ static CGFloat optionUnavailableAlpha = 0.2;
     _capturedImageV.frame = _imageStreamV.frame; // just to even it out
     _capturedImageV.backgroundColor = [UIColor clearColor];
     _capturedImageV.userInteractionEnabled = YES;
-    _capturedImageV.contentMode = UIViewContentModeScaleAspectFit;
+    _capturedImageV.contentMode = UIViewContentModeScaleAspectFill;
     [self.view insertSubview:_capturedImageV aboveSubview:_imageStreamV];
     
     // for focus
@@ -503,8 +503,6 @@ static CGFloat optionUnavailableAlpha = 0.2;
     }
     isCapturingImage = YES;
     
-    _imageStreamV.alpha = 0.0f;
-    
     AVCaptureConnection *videoConnection = nil;
     for (AVCaptureConnection *connection in _stillImageOutput.connections)
     {
@@ -567,8 +565,11 @@ static CGFloat optionUnavailableAlpha = 0.2;
          }
          
          isCapturingImage = NO;
-         _capturedImageV.alpha = 0.0f;
          _capturedImageV.image = [self crop:capturedImage];
+         // show captured image view
+         _capturedImageV.alpha = 1.0f;
+         // hide image stream view
+         _imageStreamV.alpha = 0.0f;
          imageData = nil;
          
          // If we have disabled the photo preview directly fire the delegate callback, otherwise, show user a preview
@@ -616,6 +617,7 @@ static CGFloat optionUnavailableAlpha = 0.2;
 
 - (void) backBtnPressed:(id)sender {
     if (_capturedImageV.image) {
+        _imageStreamV.alpha = 1.0f;
         _capturedImageV.contentMode = UIViewContentModeScaleAspectFill;
         _capturedImageV.backgroundColor = [UIColor clearColor];
         _capturedImageV.image = nil;
